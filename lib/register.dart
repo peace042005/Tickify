@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:groupe03_application/data/services/user_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -45,6 +46,12 @@ class _RegisterState extends State<Register> {
         prenomController.clear();
         emailController.clear();
 
+        // Initialiser une instance de shared preference
+        final sharedPref = await SharedPreferences.getInstance();
+
+        // Sauvegerder le token en mémoire
+        sharedPref.setString("token", result.token!);
+
         Fluttertoast.showToast(
           msg: "Utilisateur créé avec succès",
           toastLength: Toast.LENGTH_LONG,
@@ -79,6 +86,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -89,6 +97,7 @@ class _RegisterState extends State<Register> {
           ),
         ),
         backgroundColor: Colors.blue,
+        // titleTextStyle: Theme.of(context).textTheme.titleMedium,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
