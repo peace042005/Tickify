@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupe03_application/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:groupe03_application/themes/themes.dart';
 import 'package:groupe03_application/register.dart';
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
       theme: Themes.lightTheme,
       darkTheme: Themes.darkTheme,
       themeMode: ThemeMode.system,
-      home: token == "" ? const Register() : const Register(),
+      // home: token == "" ? const Register() : const Register(),
+      home: Home(),
     );
   }
 }
