@@ -4,7 +4,8 @@ Dio configureDio() {
   final options = BaseOptions(
     // baseUrl: 'http://192.168.18.196:3030/',
     // baseUrl: 'http://192.168.64.196:8000/api/v1/',
-    baseUrl: 'http://127.0.0.1:8000/api/v1/',
+    // baseUrl: 'http://127.0.0.1:8000/api/v1/',
+    baseUrl: 'https://1c91-41-138-91-151.ngrok-free.app/api/v1/',
     // baseUrl: 'http://10.0.0.2:8000/api/v1/',
     // baseUrl: 'http://localhost:8000/api/v1/',
     connectTimeout: const Duration(seconds: 30),
