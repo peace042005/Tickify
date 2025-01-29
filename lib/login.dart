@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:groupe03_application/home.dart';
+import 'package:groupe03_application/my_ticket.dart';
 import 'package:groupe03_application/register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -56,7 +57,7 @@ class _LoginState extends State<Login> {
 
       // rediriger vers la page home
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Home()));
+          context, MaterialPageRoute(builder: (context) => const MyTicket()));
     } on DioException catch (e) {
       // Quand erreur de requête, afficher les erreurs et le status code
       if (e.response != null) {
