@@ -21,7 +21,7 @@ class _MyTicketState extends State<MyTicket> {
   // Vérification de l'authentification
   Future<void> checkAuth() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString("token");
+    final String token = prefs.getString("token") ?? '';
 
     if (token == "") {
       // Rediriger vers la page de connexion
@@ -32,6 +32,10 @@ class _MyTicketState extends State<MyTicket> {
     } else {
       loadTickets();
     }
+  }
+
+  void _checkAuthAndLoadTickets() async {
+    await checkAuth();
   }
 
   // Chargement des tickets
@@ -53,7 +57,7 @@ class _MyTicketState extends State<MyTicket> {
   @override
   void initState() {
     super.initState();
-    checkAuth();
+    _checkAuthAndLoadTickets();
   }
 
   @override
