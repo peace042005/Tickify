@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:groupe03_application/data/services/ticket_service.dart';
 import 'package:groupe03_application/data/models/ticket.dart';
-import 'package:intl/intl.dart'; // Formatage des dates
+import 'package:groupe03_application/login.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Formatage des dates
 
 class MyTicket extends StatefulWidget {
   const MyTicket({super.key});
@@ -15,6 +17,22 @@ class MyTicket extends StatefulWidget {
 class _MyTicketState extends State<MyTicket> {
   List<Ticket> tickets = [];
   final TicketService ticketService = TicketService();
+
+  // Vérification de l'authentification
+  Future<void> checkAuth() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString("token");
+
+    if (token == "") {
+      // Rediriger vers la page de connexion
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Login()),
+      );
+    } else {
+      loadTickets();
+    }
+  }
 
   // Chargement des tickets
   loadTickets() async {
@@ -35,7 +53,7 @@ class _MyTicketState extends State<MyTicket> {
   @override
   void initState() {
     super.initState();
-    loadTickets();
+    checkAuth();
   }
 
   @override
@@ -77,7 +95,7 @@ class _MyTicketState extends State<MyTicket> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold))),
                             DataColumn(
-                                label: Text("Créé le",
+                                label: Text("Acheté le",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold))),
                           ],

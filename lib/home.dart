@@ -2,8 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:groupe03_application/data/models/evenement.dart';
 import 'package:groupe03_application/data/services/evenement_service.dart';
-import 'package:groupe03_application/my_ticket.dart';
-import 'package:groupe03_application/util/navigation_page.dart';
 import 'package:groupe03_application/components/evenement_card.dart';
 
 class Home extends StatefulWidget {
@@ -18,15 +16,6 @@ class _HomeState extends State<Home> {
   bool _isLoading = true;
   List<Data> _events = [];
   String? _error;
-  NavigationPage _selectedPage = NavigationPage.events;
-  // int _selectedIndex = 0; // Add this line for bottom nav
-
-  // Add this method to handle bottom nav taps
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedPage = NavigationPage.values[index];
-    });
-  }
 
   @override
   void initState() {
@@ -89,7 +78,6 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        // backgroundColor: Colors.blueAccent,
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: const Text('Événements',
             style:
@@ -103,42 +91,10 @@ class _HomeState extends State<Home> {
       ),
       body: RefreshIndicator(
         onRefresh: _loadEvents,
-        child: _getPage(_selectedPage),
-      ),
-      bottomNavigationBar: ClipRRect(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-        child: BottomNavigationBar(
-          items: NavigationPage.values
-              .map((page) => BottomNavigationBarItem(
-                  icon: Icon(page.icon), label: page.label))
-              .toList(),
-          currentIndex: _selectedPage.index,
-          selectedItemColor:
-              Theme.of(context).colorScheme.primary, // Matches theme
-          unselectedItemColor: Theme.of(context)
-              .colorScheme
-              .onSurface
-              .withOpacity(0.6), // Softer grey for unselected
-          backgroundColor:
-              Theme.of(context).colorScheme.surface, // Matches background
-
-          type: BottomNavigationBarType.fixed,
-          selectedFontSize: 12,
-          unselectedFontSize: 12,
-          elevation: 0,
-          onTap: _onItemTapped,
-        ),
+        child: _buildBody(),
       ),
     );
   }
-
-  // Add this method to handle page switching
-  Widget _getPage(NavigationPage page) => switch (page) {
-        NavigationPage.events => _buildBody(),
-        NavigationPage.search => const Center(child: Text('Page Recherche')),
-        NavigationPage.tickets => const MyTicket(),
-        NavigationPage.profile => const Center(child: Text('Page Profil')),
-      };
 
   Widget _buildBody() {
     // Afficher un indicateur de chargement lorsque les évènements ne sont pas chargés
