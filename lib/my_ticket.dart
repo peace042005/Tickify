@@ -63,6 +63,7 @@ class _MyTicketState extends State<MyTicket> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Text("Mes Tickets"),
         backgroundColor: Colors.blue,

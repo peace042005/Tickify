@@ -101,6 +101,7 @@ class _RegisterState extends State<Register> {
     // ignore: unused_local_variable
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Text(
           "Création de compte",

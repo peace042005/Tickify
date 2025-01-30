@@ -81,8 +81,10 @@ class _MainWrapperState extends State<MainWrapper> {
           }
         },
         child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.surface,
           bottomNavigationBar: NavigationBar(
             backgroundColor: Colors.transparent,
+            indicatorColor: Theme.of(context).colorScheme.secondary,
             elevation: 0,
             selectedIndex: _selectedIndex,
             onDestinationSelected: (int index) {

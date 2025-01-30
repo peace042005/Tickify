@@ -11,6 +11,7 @@ class _RechercheState extends State<Recherche> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
           title: Text("Rechercher",
               style:
@@ -30,10 +31,12 @@ class _RechercheState extends State<Recherche> {
                           hintText: 'Rechercher...',
                           border: InputBorder.none,
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey, width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                           ),
                           focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 2.0),
                           ),
                         ),
                       ),
@@ -57,14 +60,20 @@ class _RechercheState extends State<Recherche> {
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0), // Espacement horizontal réduit
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5.0), // Espacement horizontal réduit
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0), // Coins arrondis
-                            side: BorderSide(color: Colors.blue, width: 1.5), // Bordure bleue personnalisée
+                            borderRadius:
+                                BorderRadius.circular(12.0), // Coins arrondis
+                            side: BorderSide(
+                                color: Colors.blue,
+                                width: 1.5), // Bordure bleue personnalisée
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0), // Padding interne du bouton
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 8.0), // Padding interne du bouton
                         ),
                         onPressed: () {
                           // Action du bouton 1
