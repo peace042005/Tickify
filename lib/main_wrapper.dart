@@ -51,11 +51,11 @@ class _MainWrapperState extends State<MainWrapper> {
     // revenir
     if (_selectedIndex == 0) {
       final homeNavigator = _navigatorKeys[0].currentState;
-      if (homeNavigator != null && homeNavigator.canPop()) {
-        homeNavigator.pop(); // Pop Home tab stack first
+      if (homeNavigator?.canPop() ?? false) {
+        homeNavigator!.pop(); // Pop Home tab stack first
         return false;
       }
-      // return true; // Nothing left to pop, allow app to close
+
       final now = DateTime.now();
       if (_lastBackPressTime == null ||
           now.difference(_lastBackPressTime!) > const Duration(seconds: 2)) {
@@ -74,9 +74,7 @@ class _MainWrapperState extends State<MainWrapper> {
     }
 
     // Otherwise, switch to Home tab
-    setState(() {
-      _selectedIndex = 0;
-    });
+    setState(() => _selectedIndex = 0);
     return false;
   }
 

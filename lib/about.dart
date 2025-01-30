@@ -7,7 +7,10 @@ class About extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Center(
+      appBar: AppBar(
+        title: const Text("À propos"),
+      ),
+      body: const Center(
         child: Text("À propos de nous,"),
       ),
     );
