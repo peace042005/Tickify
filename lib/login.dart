@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:groupe03_application/home.dart';
+import 'package:groupe03_application/profil.dart';
 import 'package:groupe03_application/register.dart';
+import 'package:groupe03_application/util/check_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/models/authenticated_user.dart';
@@ -25,6 +27,18 @@ class _LoginState extends State<Login> {
 
   bool loading = false;
   bool _obscurePassword = true;
+
+  // Fonction pour vérifier si l'utilsateur est authentifié ou non
+  void _checkUserLoggedIn() async {
+    if (await userLoggedIn()) {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Profil()),
+        );
+      }
+    }
+  }
 
   loginUser() async {
     // déclencher le loading
@@ -55,8 +69,15 @@ class _LoginState extends State<Login> {
       Fluttertoast.showToast(msg: "Utilisateur connecté avec succès");
 
       // rediriger vers la page home
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Home()));
+      // Navigator.pushReplacement(
+      //     context, MaterialPageRoute(builder: (context) => const Profil()));
+
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const Profil()),
+        (Route<dynamic> route) => false, // Remove all previous routes
+      );
+
+      // Navigator.pop(context);
     } on DioException catch (e) {
       // Quand erreur de requête, afficher les erreurs et le status code
       if (e.response != null) {
@@ -77,8 +98,15 @@ class _LoginState extends State<Login> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _checkUserLoggedIn();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Text(
           "Connexion",

@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       darkTheme: Themes.darkTheme,
       themeMode: ThemeMode.system,
       // home: token == "" ? const Register() : const Register(),
-      home: Recherche(),
+      home: Home(),
     );
   }
 }

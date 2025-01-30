@@ -11,6 +11,10 @@ class UserService {
     return AuthenticatedUser.fromJson(response.data);
   }
 
+  Future<void> logout() async {
+    await api.post('logout');
+  }
+
   /* Future<User> create (Map<String, dynamic> data) async{
 
     final response = await api.post('register', data: data);
