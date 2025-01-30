@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:groupe03_application/data/services/user_service.dart';
-import 'package:groupe03_application/home.dart';
 import 'package:groupe03_application/login.dart';
+import 'package:groupe03_application/profil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
@@ -65,9 +65,13 @@ class _RegisterState extends State<Register> {
           gravity: ToastGravity.BOTTOM,
         );
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Home()),
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const Home()),
+        // );
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const Profil()),
+          (Route<dynamic> route) => false, // Remove all previous routes
         );
       }
     } on DioException catch (e) {

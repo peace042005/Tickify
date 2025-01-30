@@ -69,8 +69,13 @@ class _LoginState extends State<Login> {
       Fluttertoast.showToast(msg: "Utilisateur connecté avec succès");
 
       // rediriger vers la page home
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Profil()));
+      // Navigator.pushReplacement(
+      //     context, MaterialPageRoute(builder: (context) => const Profil()));
+
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const Profil()),
+        (Route<dynamic> route) => false, // Remove all previous routes
+      );
 
       // Navigator.pop(context);
     } on DioException catch (e) {

@@ -24,6 +24,7 @@ class _ProfilState extends State<Profil> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _loadUserData();
+    setState(() {});
   }
 
   Future<void> _loadUserData() async {

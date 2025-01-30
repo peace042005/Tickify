@@ -4,5 +4,5 @@ Future<bool> userLoggedIn() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final String token = prefs.getString("token") ?? '';
 
-  return token != '';
+  return token.isNotEmpty;
 }

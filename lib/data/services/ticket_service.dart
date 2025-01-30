@@ -3,8 +3,6 @@ import 'package:groupe03_application/data/dio_instande.dart';
 import 'package:groupe03_application/data/models/ticket.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 class TicketService {
   Dio api = configureDio(); // ← configureDio() doit être accessible ici
 
