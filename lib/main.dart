@@ -22,11 +22,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: Themes.lightTheme,
-      darkTheme: Themes.darkTheme,
+      theme: lightTheme,
+      darkTheme: darkTheme,
       themeMode: ThemeMode.system,
       // home: token == "" ? const Register() : const Register(),
-      home: Home(),
+      home: Recherche(),
     );
   }
 }
