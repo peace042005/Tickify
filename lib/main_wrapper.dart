@@ -17,6 +17,8 @@ class _MainWrapperState extends State<MainWrapper> {
   final searchNavigatorKey = GlobalKey<NavigatorState>();
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [];
 
+  DateTime? _lastBackPressTime; // Track the last back press time
+
   @override
   void initState() {
     super.initState();
@@ -35,21 +37,40 @@ class _MainWrapperState extends State<MainWrapper> {
     final NavigatorState? currentNavigator =
         _navigatorKeys[_selectedIndex].currentState;
 
+    // Si nous ne sommes sur aucune page (surement un bug), sortir de l'application
     if (currentNavigator == null) return true;
 
+    // Si nous sommes sur une page où nous pouvons revenir en arrière
+    // Revenir en arrière et empêcher l'application de se fermer
     if (currentNavigator.canPop()) {
       currentNavigator.pop();
-      return false; // Prevent default back action
+      return false;
     }
 
-    // If already on the home tab, check if Home has a back stack
+    // Si nous sommes sur la page d'accueil, et qu'on peut toujours revenir en arrière,
+    // revenir
     if (_selectedIndex == 0) {
       final homeNavigator = _navigatorKeys[0].currentState;
       if (homeNavigator != null && homeNavigator.canPop()) {
         homeNavigator.pop(); // Pop Home tab stack first
         return false;
       }
-      return true; // Nothing left to pop, allow app to close
+      // return true; // Nothing left to pop, allow app to close
+      final now = DateTime.now();
+      if (_lastBackPressTime == null ||
+          now.difference(_lastBackPressTime!) > const Duration(seconds: 2)) {
+        // First press or more than 2 seconds since last press
+        _lastBackPressTime = now;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Appuyez à nouveau pour quitter'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        return false;
+      }
+
+      return true;
     }
 
     // Otherwise, switch to Home tab
@@ -82,32 +103,42 @@ class _MainWrapperState extends State<MainWrapper> {
         },
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.surface,
-          bottomNavigationBar: NavigationBar(
-            backgroundColor: Colors.transparent,
-            indicatorColor: Theme.of(context).colorScheme.secondary,
-            elevation: 0,
-            selectedIndex: _selectedIndex,
-            onDestinationSelected: (int index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            destinations: const <NavigationDestination>[
-              NavigationDestination(
-                icon: Icon(Icons.favorite_border),
-                selectedIcon: Icon(Icons.favorite),
-                label: "Accueil",
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  width: 0.1,
+                ),
               ),
-              NavigationDestination(
-                icon: Icon(Icons.search),
-                label: "Rechercher",
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.person_outline),
-                selectedIcon: Icon(Icons.person),
-                label: "Profil",
-              ),
-            ],
+            ),
+            child: NavigationBar(
+              backgroundColor: Colors.transparent,
+              indicatorColor: Theme.of(context).colorScheme.secondary,
+              elevation: 0,
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: (int index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              destinations: const <NavigationDestination>[
+                NavigationDestination(
+                  icon: Icon(Icons.favorite_border),
+                  selectedIcon: Icon(Icons.favorite),
+                  label: "Accueil",
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.search),
+                  label: "Rechercher",
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.person_outline),
+                  selectedIcon: Icon(Icons.person),
+                  label: "Profil",
+                ),
+              ],
+            ),
           ),
           body: SafeArea(
             top: false,

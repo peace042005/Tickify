@@ -8,14 +8,39 @@ class Recherche extends StatefulWidget {
 }
 
 class _RechercheState extends State<Recherche> {
+  // Constructeur pour chaque option de filtrage
+  Widget _buildFilterButton(BuildContext context, String label) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.onSurface,
+              width: 0.5,
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+        ),
+        onPressed: () {
+          // Action du bouton
+        },
+        child: Text(
+          label,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-          title: Text("Rechercher",
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
+        title: const Text("Rechercher"),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -25,7 +50,7 @@ class _RechercheState extends State<Recherche> {
                 children: [
                   Expanded(
                     child: Container(
-                      margin: EdgeInsets.only(left: 16.0), // Marge gauche
+                      margin: const EdgeInsets.only(left: 16.0), // Marge gauche
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Rechercher...',
@@ -35,18 +60,22 @@ class _RechercheState extends State<Recherche> {
                                 BorderSide(color: Colors.grey, width: 1.5),
                           ),
                           focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2.0),
+                            borderSide: BorderSide(
+                              // color: Colors.blue,
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 2.0,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(width: 8.0),
+                  const SizedBox(width: 8.0),
                   IconButton(
                     icon: Icon(
                       Icons.search,
-                      color: Colors.blue, // Couleur de l'icône
+                      // color: Colors.blue, // Couleur de l'icône
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     onPressed: () {
                       // Action de recherche
@@ -54,93 +83,16 @@ class _RechercheState extends State<Recherche> {
                   ),
                 ],
               ),
-              SizedBox(height: 5.0), // Espacement entre les deux lignes
+              const SizedBox(height: 5.0), // Espacement entre les deux lignes
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5.0), // Espacement horizontal réduit
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(12.0), // Coins arrondis
-                            side: BorderSide(
-                                color: Colors.blue,
-                                width: 1.5), // Bordure bleue personnalisée
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 12.0,
-                              vertical: 8.0), // Padding interne du bouton
-                        ),
-                        onPressed: () {
-                          // Action du bouton 1
-                        },
-                        child: Text('id'),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                            side: BorderSide(color: Colors.blue, width: 1.5),
-                          ),
-                        ),
-                        onPressed: () {
-                          // Action du bouton 2
-                        },
-                        child: Text('nom'),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                            side: BorderSide(color: Colors.blue, width: 1.5),
-                          ),
-                        ),
-                        onPressed: () {
-                          // Action du bouton 3
-                        },
-                        child: Text('description'),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                            side: BorderSide(color: Colors.blue, width: 1.5),
-                          ),
-                        ),
-                        onPressed: () {
-                          // Action du bouton 4
-                        },
-                        child: Text('nombre de tickets'),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                            side: BorderSide(color: Colors.blue, width: 1.5),
-                          ),
-                        ),
-                        onPressed: () {
-                          // Action du bouton 5
-                        },
-                        child: Text('date'),
-                      ),
-                    ),
+                    _buildFilterButton(context, 'id'),
+                    _buildFilterButton(context, 'nom'),
+                    _buildFilterButton(context, 'description'),
+                    _buildFilterButton(context, 'nombre de tickets'),
+                    _buildFilterButton(context, 'date'),
                   ],
                 ),
               ),

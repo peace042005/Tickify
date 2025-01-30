@@ -78,7 +78,6 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
         title: const Text('Événements',
             style:
                 TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),

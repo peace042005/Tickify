@@ -36,60 +36,78 @@ class _ProfilState extends State<Profil> {
     });
   }
 
-  Widget _buildProfileCard() {
-    return Card(
-      margin: const EdgeInsets.all(16.0),
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CircleAvatar(
-              radius: 40,
-              backgroundColor: Colors.blue,
-              child: Icon(Icons.person, size: 40, color: Colors.white),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              '$prenom $name',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 8),
-            Row(
+  Widget _buildProfileSection() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            child: Icon(Icons.person,
+                size: 30, color: Theme.of(context).colorScheme.onPrimary),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.email, size: 16, color: Colors.grey),
-                const SizedBox(width: 8),
+                Text(
+                  '$prenom $name',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 4),
                 Text(
                   email,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.grey[600],
-                      ),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildNavigationCard({
+  Widget _buildListItem({
     required String title,
     required IconData icon,
-    required String route,
-    required Color color,
+    required VoidCallback onTap,
+    String? subtitle,
+    Color? iconColor,
   }) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: color.withOpacity(0.1),
-          child: Icon(icon, color: color),
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              size: 24,
+              color: iconColor ?? Theme.of(context).colorScheme.onSecondary,
+            ),
+            const SizedBox(width: 24),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
         ),
-        title: Text(title),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () => Navigator.pushNamed(context, route),
       ),
     );
   }
@@ -99,7 +117,7 @@ class _ProfilState extends State<Profil> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Text("Votre profil"),
+        title: const Text("Profil"),
         elevation: 0,
       ),
       body: RefreshIndicator(
@@ -107,53 +125,48 @@ class _ProfilState extends State<Profil> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                width: double.infinity,
-                color: Theme.of(context).primaryColor.withOpacity(0.1),
-                child: _buildProfileCard(),
+              _buildProfileSection(),
+              const SizedBox(height: 8),
+              Divider(
+                height: 1,
+                color: Theme.of(context).colorScheme.primary,
+                thickness: 0.3,
               ),
-              const SizedBox(height: 16),
-              _buildNavigationCard(
+              _buildListItem(
                 title: 'Vos tickets',
+                subtitle: 'Consultez vos tickets en cours',
                 icon: Icons.receipt_long,
-                route: '/myTickets',
-                color: Colors.blue,
+                onTap: () => Navigator.pushNamed(context, '/myTickets'),
               ),
-              _buildNavigationCard(
+              _buildListItem(
                 title: 'Paramètres',
+                subtitle: 'Modifier certaines valeurs de l\'application',
                 icon: Icons.settings,
-                route: '/settings',
-                color: Colors.grey,
+                onTap: () => Navigator.pushNamed(context, '/settings'),
               ),
-              _buildNavigationCard(
+              _buildListItem(
                 title: 'A propos',
+                subtitle: 'En savoir plus sur les développeurs',
                 icon: Icons.help,
-                route: '/about',
-                color: Colors.green,
+                onTap: () => Navigator.pushNamed(context, '/about'),
               ),
-              token != ''
-                  ? Card(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8.0),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.red.withOpacity(0.1),
-                          child: const Icon(Icons.logout, color: Colors.red),
-                        ),
-                        title: const Text('Se déconnecter'),
-                        trailing: const Icon(Icons.chevron_right),
-                        onTap: () async {
-                          await logout();
-                          setState(() {});
-                          await _loadUserData();
-                        },
-                      ),
-                    )
-                  : _buildNavigationCard(
-                      title: 'Se connecter',
-                      icon: Icons.login,
-                      route: '/login',
-                      color: Colors.purple),
+              if (token.isNotEmpty)
+                _buildListItem(
+                  title: 'Se déconnecter',
+                  icon: Icons.logout,
+                  iconColor: Colors.red,
+                  onTap: () async {
+                    await logout();
+                    setState(() {});
+                    await _loadUserData();
+                  },
+                )
+              else
+                _buildListItem(
+                  title: 'Se connecter',
+                  icon: Icons.login,
+                  onTap: () => Navigator.pushNamed(context, '/login'),
+                ),
             ],
           ),
         ),

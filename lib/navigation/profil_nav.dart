@@ -3,6 +3,7 @@ import 'package:groupe03_application/about.dart';
 import 'package:groupe03_application/login.dart';
 import 'package:groupe03_application/my_ticket.dart';
 import 'package:groupe03_application/profil.dart';
+import 'package:groupe03_application/settings.dart';
 
 class ProfilNav extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;
@@ -25,6 +26,7 @@ class _ProfilNavState extends State<ProfilNav> {
             "/myTickets" => const MyTicket(),
             "/login" => const Login(),
             "/about" => const About(),
+            "/settings" => const Settings(),
             _ => const Profil(), // Default case
           },
         );

@@ -66,7 +66,6 @@ class _MyTicketState extends State<MyTicket> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Text("Mes Tickets"),
-        backgroundColor: Colors.blue,
       ),
       body: tickets.isEmpty
           ? const Center(
