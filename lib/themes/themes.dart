@@ -13,9 +13,10 @@ ThemeData lightTheme = ThemeData(
     onSecondary: Colors.grey.shade800,
   ),
   appBarTheme: AppBarTheme(
-    backgroundColor: Colors.grey.shade500,
-    foregroundColor: Colors.white,
+    backgroundColor: Colors.grey.shade300,
+    foregroundColor: Colors.black87,
     elevation: 0,
+    surfaceTintColor: Colors.transparent,
   ),
   textTheme: TextTheme(
     titleLarge: TextStyle(

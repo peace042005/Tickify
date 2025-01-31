@@ -78,9 +78,16 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Text('Événements',
-            style:
-                TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Événements',
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.1), // Thickness of the border
+          child: Container(
+            color: Theme.of(context).colorScheme.onSurface,
+            height: 0.1, // Thickness
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -124,7 +131,10 @@ class _HomeState extends State<Home> {
               ElevatedButton.icon(
                 onPressed: _loadEvents,
                 icon: const Icon(Icons.refresh),
-                label: const Text('Réessayer'),
+                label: Text(
+                  'Réessayer',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ),
             ],
           ),

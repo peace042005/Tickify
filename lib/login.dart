@@ -110,12 +110,14 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         title: const Text(
           "Connexion",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.1), // Thickness of the border
+          child: Container(
+            color: Theme.of(context).colorScheme.onSurface,
+            height: 0.1, // Thickness
           ),
         ),
-        backgroundColor: Colors.blue,
         elevation: 0,
         // centerTitle: true,
       ),
@@ -221,14 +223,14 @@ class _LoginState extends State<Login> {
                           ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       "Vous n'avez pas de compte? ",
                       style: TextStyle(
-                        color: Colors.black87,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     TextButton(

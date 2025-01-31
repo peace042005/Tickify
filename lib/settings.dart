@@ -13,6 +13,13 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Paramètres (à implémenter)"),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.1), // Thickness of the border
+          child: Container(
+            color: Theme.of(context).colorScheme.onSurface,
+            height: 0.1, // Thickness
+          ),
+        ),
       ),
       body: const Center(
         child: Text("Hello"),

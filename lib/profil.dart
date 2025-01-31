@@ -119,6 +119,13 @@ class _ProfilState extends State<Profil> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Text("Profil"),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.1), // Thickness of the border
+          child: Container(
+            color: Theme.of(context).colorScheme.onSurface,
+            height: 0.1, // Thickness
+          ),
+        ),
         elevation: 0,
       ),
       body: RefreshIndicator(

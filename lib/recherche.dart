@@ -37,7 +37,8 @@ class _RechercheState extends State<Recherche> {
           } else if (["nom", "description"].contains(key)) {
             params["$key[like]"] = value; // LIKE pour les textes
           } else if (["nombreTickets", "dateDebut"].contains(key)) {
-            params["$key[gt]"] = value; // Par défaut, supérieur pour les nombres et dates
+            params["$key[gt]"] =
+                value; // Par défaut, supérieur pour les nombres et dates
           }
         }
       }
@@ -71,7 +72,8 @@ class _RechercheState extends State<Recherche> {
       print(response);
 
       setState(() {
-        if (response.data is Map<String, dynamic> && response.data["data"] is List) {
+        if (response.data is Map<String, dynamic> &&
+            response.data["data"] is List) {
           _events = (response.data["data"] as List)
               .map((e) => Data.fromJson(e))
               .toList();
@@ -126,9 +128,8 @@ class _RechercheState extends State<Recherche> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Rechercher",
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
+        title: const Text("Rechercher"),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -138,33 +139,41 @@ class _RechercheState extends State<Recherche> {
                 children: [
                   Expanded(
                     child: Container(
-                      margin: EdgeInsets.only(left: 16.0), // Marge gauche
+                      margin: const EdgeInsets.only(left: 16.0), // Marge gauche
                       child: TextField(
                         controller: _searchController,
                         decoration: InputDecoration(
                           hintText: 'Rechercher...',
                           border: InputBorder.none,
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey, width: 1.5),
+                            borderSide: BorderSide(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
+                                width: 0.5),
                           ),
                           focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                            borderSide: BorderSide(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
+                                width: 2.0),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(width: 8.0),
+                  const SizedBox(width: 8.0),
                   IconButton(
                     icon: Icon(
                       Icons.search,
-                      color: Colors.blue, // Couleur de l'icône
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSecondary, // Couleur de l'icône
                     ),
                     onPressed: _searchEvents,
                   ),
                 ],
               ),
-              SizedBox(height: 5.0), // Espacement entre les deux lignes
+              const SizedBox(height: 5.0), // Espacement entre les deux lignes
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -178,11 +187,18 @@ class _RechercheState extends State<Recherche> {
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0),
-                            side: BorderSide(color: Colors.blue, width: 1.5),
+                            side: BorderSide(
+                              color: Theme.of(context).colorScheme.onSecondary,
+                              width: 0.5,
+                            ),
                           ),
                         ),
-                        onPressed: () => _selectDate(context), // Afficher le calendrier
-                        child: Text('date'),
+                        onPressed: () =>
+                            _selectDate(context), // Afficher le calendrier
+                        child: Text(
+                          'date',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
                       ),
                     ),
                   ],
@@ -203,7 +219,10 @@ class _RechercheState extends State<Recherche> {
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
-            side: BorderSide(color: Colors.blue, width: 1.5),
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.onSecondary,
+              width: 0.5,
+            ),
           ),
         ),
         onPressed: () {
@@ -211,7 +230,10 @@ class _RechercheState extends State<Recherche> {
             _searchController.text += '|$filter: ';
           });
         },
-        child: Text(filter),
+        child: Text(
+          filter,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
       ),
     );
   }
@@ -225,7 +247,8 @@ class _RechercheState extends State<Recherche> {
     );
 
     if (pickedDate != null) {
-      String formattedDate = "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+      String formattedDate =
+          "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
 
       setState(() {
         if (_searchController.text.isEmpty) {
@@ -287,7 +310,8 @@ class _RechercheState extends State<Recherche> {
           margin: const EdgeInsets.only(bottom: 16),
           clipBehavior: Clip.antiAlias,
           elevation: 8, // Ombre autour de la carte
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -295,7 +319,9 @@ class _RechercheState extends State<Recherche> {
                 AspectRatio(
                   aspectRatio: 16 / 9,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12)),
                     child: Image.network(
                       event.images!.first.url ?? '',
                       fit: BoxFit.cover,
@@ -315,12 +341,18 @@ class _RechercheState extends State<Recherche> {
                   children: [
                     Text(
                       event.nom ?? 'Sans titre',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       event.description ?? 'Aucune description',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black54),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Colors.black54),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -328,16 +360,19 @@ class _RechercheState extends State<Recherche> {
                     if (event.lieu != null) ...[
                       Row(
                         children: [
-                          const Icon(Icons.location_on, size: 16, color: Colors.blue),
+                          const Icon(Icons.location_on,
+                              size: 16, color: Colors.blue),
                           const SizedBox(width: 4),
-                          Text(event.lieu!, style: TextStyle(color: Colors.blue)),
+                          Text(event.lieu!,
+                              style: TextStyle(color: Colors.blue)),
                         ],
                       ),
                       const SizedBox(height: 8),
                     ],
                     Row(
                       children: [
-                        const Icon(Icons.calendar_today, size: 16, color: Colors.blue),
+                        const Icon(Icons.calendar_today,
+                            size: 16, color: Colors.blue),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
@@ -350,7 +385,8 @@ class _RechercheState extends State<Recherche> {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Icon(Icons.confirmation_number, size: 16, color: Colors.blue),
+                        const Icon(Icons.confirmation_number,
+                            size: 16, color: Colors.blue),
                         const SizedBox(width: 4),
                         Text('${event.nombreTickets ?? 0} tickets disponibles'),
                       ],

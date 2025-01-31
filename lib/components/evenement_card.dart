@@ -5,7 +5,8 @@ class EvenementCard extends StatelessWidget {
   final Data event;
   final String Function(String?) formatDate;
 
-  const EvenementCard({super.key, required this.event, required this.formatDate});
+  const EvenementCard(
+      {super.key, required this.event, required this.formatDate});
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +52,7 @@ class EvenementCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   event.description ?? 'Aucune description',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.black54),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -62,16 +60,19 @@ class EvenementCard extends StatelessWidget {
                 if (event.lieu != null) ...[
                   Row(
                     children: [
-                      const Icon(Icons.location_on, size: 16, color: Colors.blue),
+                      const Icon(Icons.location_on,
+                          size: 16, color: Colors.blue),
                       const SizedBox(width: 4),
-                      Text(event.lieu!, style: const TextStyle(color: Colors.blue)),
+                      Text(event.lieu!,
+                          style: const TextStyle(color: Colors.blue)),
                     ],
                   ),
                   const SizedBox(height: 8),
                 ],
                 Row(
                   children: [
-                    const Icon(Icons.calendar_today, size: 16, color: Colors.blue),
+                    const Icon(Icons.calendar_today,
+                        size: 16, color: Colors.blue),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(
@@ -84,7 +85,8 @@ class EvenementCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    const Icon(Icons.confirmation_number, size: 16, color: Colors.blue),
+                    const Icon(Icons.confirmation_number,
+                        size: 16, color: Colors.blue),
                     const SizedBox(width: 4),
                     Text('${event.nombreTickets ?? 0} tickets disponibles'),
                   ],

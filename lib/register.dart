@@ -109,12 +109,7 @@ class _RegisterState extends State<Register> {
       appBar: AppBar(
         title: const Text(
           "Création de compte",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
         ),
-        backgroundColor: Colors.blue,
         // titleTextStyle: Theme.of(context).textTheme.titleMedium,
       ),
       body: SafeArea(
@@ -132,11 +127,13 @@ class _RegisterState extends State<Register> {
                     color: Colors.blue,
                   ),
                 ),
-                const Text(
-                  "Créer vore compte afin de pouvoir acheter des tickets.",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
+                const Center(
+                  child: Text(
+                    "Créer vore compte afin de pouvoir acheter des tickets",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 50),
@@ -286,15 +283,14 @@ class _RegisterState extends State<Register> {
                           ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       "Vous avez déjà un compte? ",
                       style: TextStyle(
-                        color: Colors.black87,
-                      ),
+                          color: Theme.of(context).colorScheme.onSurface),
                     ),
                     TextButton(
                       onPressed: () {

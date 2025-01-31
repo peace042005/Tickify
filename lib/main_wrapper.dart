@@ -91,6 +91,7 @@ class _MainWrapperState extends State<MainWrapper> {
       ),
       child: PopScope(
         canPop: false,
+        // ignore: deprecated_member_use
         onPopInvoked: (didPop) async {
           if (didPop) return;
 
