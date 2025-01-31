@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-Ticket ticketFromJson(String str) =>
-    Ticket.fromJson(json.decode(str));
+Ticket ticketFromJson(String str) => Ticket.fromJson(json.decode(str));
 
 String ticketToJson(Ticket data) => json.encode(data.toJson());
 
@@ -15,11 +14,11 @@ class Ticket {
 
   Ticket(
       {this.id,
-        this.statut,
-        this.typeTicketId,
-        this.userId,
-        this.createdAt,
-        this.updatedAt});
+      this.statut,
+      this.typeTicketId,
+      this.userId,
+      this.createdAt,
+      this.updatedAt});
 
   Ticket.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -31,13 +30,13 @@ class Ticket {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['statut'] = this.statut;
-    data['type_ticket_id'] = this.typeTicketId;
-    data['user_id'] = this.userId;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['statut'] = statut;
+    data['type_ticket_id'] = typeTicketId;
+    data['user_id'] = userId;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

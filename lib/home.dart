@@ -105,7 +105,11 @@ class _HomeState extends State<Home> {
   Widget _buildBody() {
     // Afficher un indicateur de chargement lorsque les évènements ne sont pas chargés
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return Center(
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+      );
     }
 
     // Si une erreur s'est produite, afficher un message d'erreur

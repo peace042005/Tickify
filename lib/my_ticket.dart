@@ -17,6 +17,7 @@ class MyTicket extends StatefulWidget {
 class _MyTicketState extends State<MyTicket> {
   List<Ticket> tickets = [];
   final TicketService ticketService = TicketService();
+  bool isLoading = true;
 
   // Vérification de l'authentification
   Future<void> checkAuth() async {
@@ -41,6 +42,9 @@ class _MyTicketState extends State<MyTicket> {
   // Chargement des tickets
   loadTickets() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       final ticketList = await ticketService.all();
 
       setState(() {
@@ -51,6 +55,10 @@ class _MyTicketState extends State<MyTicket> {
     } on DioException catch (e) {
       print("Erreur API : ${e.response?.data}");
       Fluttertoast.showToast(msg: "Erreur lors du chargement des tickets");
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -74,70 +82,78 @@ class _MyTicketState extends State<MyTicket> {
           ),
         ),
       ),
-      body: tickets.isEmpty
-          ? const Center(
-              child: Text(
-                "Aucun ticket disponible",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            )
-          : Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical, // Permet le scroll vertical
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis
-                          .horizontal, // Permet le scroll horizontal si besoin
-                      child: SizedBox(
-                        width: MediaQuery.of(context)
-                            .size
-                            .width, // Largeur maximale
-                        child: DataTable(
-                          columnSpacing: 30, // Espacement entre les colonnes
-                          border: TableBorder.all(width: 1, color: Colors.grey),
-                          columns: const [
-                            DataColumn(
-                                label: Text("N",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold))),
-                            DataColumn(
-                                label: Text("Statut",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold))),
-                            DataColumn(
-                                label: Text("Acheté le",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold))),
-                          ],
-                          rows: tickets
-                              .asMap()
-                              .map(
-                                (index, ticket) => MapEntry(
-                                  index,
-                                  DataRow(
-                                    cells: [
-                                      DataCell(Text((index + 1)
-                                          .toString())), // Affiche l'index + 1
-                                      DataCell(
-                                          Text(ticket.statut ?? "Inconnu")),
-                                      DataCell(Text(
-                                        DateFormat('dd/MM/yyyy HH:mm').format(
-                                            DateTime.parse(ticket.createdAt!)),
-                                      )),
-                                    ],
-                                  ),
-                                ),
-                              )
-                              .values
-                              .toList(),
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    if (isLoading) {
+      return Center(
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+      );
+    }
+
+    if (tickets.isEmpty) {
+      return const Center(
+        child: Text(
+          "Aucun ticket disponible",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      );
+    }
+
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical, // Permet le scroll vertical
+            child: SingleChildScrollView(
+              scrollDirection:
+                  Axis.horizontal, // Permet le scroll horizontal si besoin
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width, // Largeur maximale
+                child: DataTable(
+                  columnSpacing: 30, // Espacement entre les colonnes
+                  border: TableBorder.all(width: 1, color: Colors.grey),
+                  columns: const [
+                    DataColumn(
+                        label: Text("N",
+                            style: TextStyle(fontWeight: FontWeight.bold))),
+                    DataColumn(
+                        label: Text("Statut",
+                            style: TextStyle(fontWeight: FontWeight.bold))),
+                    DataColumn(
+                        label: Text("Acheté le",
+                            style: TextStyle(fontWeight: FontWeight.bold))),
+                  ],
+                  rows: tickets
+                      .asMap()
+                      .map(
+                        (index, ticket) => MapEntry(
+                          index,
+                          DataRow(
+                            cells: [
+                              DataCell(Text((index + 1)
+                                  .toString())), // Affiche l'index + 1
+                              DataCell(Text(ticket.statut ?? "Inconnu")),
+                              DataCell(Text(
+                                DateFormat('dd/MM/yyyy HH:mm')
+                                    .format(DateTime.parse(ticket.createdAt!)),
+                              )),
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                      )
+                      .values
+                      .toList(),
                 ),
-              ],
+              ),
             ),
+          ),
+        ),
+      ],
     );
   }
 }

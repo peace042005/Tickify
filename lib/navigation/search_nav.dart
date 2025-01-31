@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:groupe03_application/home.dart';
 import 'package:groupe03_application/recherche.dart';
 
 class SearchNav extends StatefulWidget {

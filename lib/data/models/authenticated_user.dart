@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-AuthenticatedUser authenticatedUserFromJson(String str) => AuthenticatedUser.fromJson(json.decode(str));
+AuthenticatedUser authenticatedUserFromJson(String str) =>
+    AuthenticatedUser.fromJson(json.decode(str));
 
-String authenticatedUserToJson(AuthenticatedUser data) => json.encode(data.toJson());
+String authenticatedUserToJson(AuthenticatedUser data) =>
+    json.encode(data.toJson());
 
 class AuthenticatedUser {
   User? user;
@@ -16,7 +18,7 @@ class AuthenticatedUser {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (user != null) {
       data['user'] = user!.toJson();
     }
@@ -54,7 +56,7 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['prenom'] = prenom;
     data['email'] = email;

@@ -319,7 +319,7 @@ class _RechercheState extends State<Recherche> {
                 AspectRatio(
                   aspectRatio: 16 / 9,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(12),
                         topRight: Radius.circular(12)),
                     child: Image.network(
@@ -364,7 +364,7 @@ class _RechercheState extends State<Recherche> {
                               size: 16, color: Colors.blue),
                           const SizedBox(width: 4),
                           Text(event.lieu!,
-                              style: TextStyle(color: Colors.blue)),
+                              style: const TextStyle(color: Colors.blue)),
                         ],
                       ),
                       const SizedBox(height: 8),
@@ -377,7 +377,7 @@ class _RechercheState extends State<Recherche> {
                         Expanded(
                           child: Text(
                             'Du ${_formatDate(event.dateDebut)} au ${_formatDate(event.dateFin)}',
-                            style: TextStyle(color: Colors.blue),
+                            style: const TextStyle(color: Colors.blue),
                           ),
                         ),
                       ],
