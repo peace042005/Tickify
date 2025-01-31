@@ -19,14 +19,17 @@ class _RechercheState extends State<Recherche> {
 
   Map<String, dynamic> _buildQueryParams(String queryText) {
     Map<String, dynamic> params = {};
+    bool hasKeyword = false; // Vérifie si un mot-clé a été utilisé
 
     if (queryText.isNotEmpty) {
       List<String> parts = queryText.split('|');
+
       for (String part in parts) {
-        List<String> keyValue = part.split('=');
+        List<String> keyValue = part.split(': ');
         if (keyValue.length == 2) {
           String key = keyValue[0].trim();
           String value = keyValue[1].trim();
+          hasKeyword = true; // Un mot-clé a été trouvé
 
           // Appliquer les règles :
           if (["id"].contains(key)) {
@@ -37,6 +40,11 @@ class _RechercheState extends State<Recherche> {
             params["$key[gt]"] = value; // Par défaut, supérieur pour les nombres et dates
           }
         }
+      }
+
+      // Si aucun mot-clé n'a été trouvé, considérer le texte comme un nom
+      if (!hasKeyword) {
+        params["nom[like]"] = queryText.trim();
       }
     }
 
@@ -161,11 +169,22 @@ class _RechercheState extends State<Recherche> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _buildFilterButton('id'),
                     _buildFilterButton('nom'),
                     _buildFilterButton('description'),
                     _buildFilterButton('nombreTickets'),
-                    _buildFilterButton('date'),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            side: BorderSide(color: Colors.blue, width: 1.5),
+                          ),
+                        ),
+                        onPressed: () => _selectDate(context), // Afficher le calendrier
+                        child: Text('date'),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -189,12 +208,33 @@ class _RechercheState extends State<Recherche> {
         ),
         onPressed: () {
           setState(() {
-            _searchController.text += '|$filter=';
+            _searchController.text += '|$filter: ';
           });
         },
         child: Text(filter),
       ),
     );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000), // Date minimale
+      lastDate: DateTime(2100), // Date maximale
+    );
+
+    if (pickedDate != null) {
+      String formattedDate = "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+
+      setState(() {
+        if (_searchController.text.isEmpty) {
+          _searchController.text = "dateDebut: $formattedDate";
+        } else {
+          _searchController.text += "|dateDebut: $formattedDate";
+        }
+      });
+    }
   }
 
   Widget _buildBody() {
@@ -234,7 +274,7 @@ class _RechercheState extends State<Recherche> {
 
     if (_events.isEmpty) {
       return const Center(
-        child: Text('Aucun événement disponible'),
+        child: Text('Aucun événement'),
       );
     }
 
