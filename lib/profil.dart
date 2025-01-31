@@ -142,7 +142,7 @@ class _ProfilState extends State<Profil> {
               ),
               _buildListItem(
                 title: 'Vos tickets',
-                subtitle: 'Consultez vos tickets en cours',
+                subtitle: 'Consultez vos tickets achetés',
                 icon: Icons.receipt_long,
                 onTap: () => Navigator.pushNamed(context, '/myTickets'),
               ),

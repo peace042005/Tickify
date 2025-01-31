@@ -130,6 +130,7 @@ class _LoginState extends State<Login> {
                 const SizedBox(height: 20),
                 const Text(
                   "Connexion",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -138,6 +139,7 @@ class _LoginState extends State<Login> {
                 ),
                 const Text(
                   "Connectez-vous pour accéder à votre compte",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.bold,

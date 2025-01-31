@@ -121,6 +121,7 @@ class _RegisterState extends State<Register> {
                 const SizedBox(height: 10),
                 const Text(
                   "Créer un compte",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -130,6 +131,7 @@ class _RegisterState extends State<Register> {
                 const Center(
                   child: Text(
                     "Créer vore compte afin de pouvoir acheter des tickets",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.grey,
                       fontWeight: FontWeight.bold,

@@ -36,6 +36,7 @@ ThemeData darkTheme = ThemeData(
     secondary: Color(0xFF404040), // Even lighter for contrast
     onSecondary: Color(0xFFB0B0B0),
     outline: Color(0xFF1F2A32), // Border color for navigation
+    inversePrimary: Color(0xFF6FA6C9),
   ),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color(0xFF0B1014),
