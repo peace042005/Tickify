@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 Dio configureDio() {
   final options = BaseOptions(
-    baseUrl: 'https://7b67-156-0-212-28.ngrok-free.app/api/v1/',
+    baseUrl: 'https://40cf-156-0-214-14.ngrok-free.app/api/v1/',
     connectTimeout: const Duration(seconds: 30),
     receiveTimeout: const Duration(seconds: 30),
     headers: {

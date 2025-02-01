@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupe03_application/components/theme_settings_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:groupe03_application/util/logout.dart';
 
@@ -137,8 +138,8 @@ class _ProfilState extends State<Profil> {
               const SizedBox(height: 8),
               Divider(
                 height: 1,
-                color: Theme.of(context).colorScheme.primary,
-                thickness: 0.3,
+                color: Theme.of(context).colorScheme.onSurface,
+                thickness: 0.1,
               ),
               _buildListItem(
                 title: 'Vos tickets',
@@ -157,6 +158,13 @@ class _ProfilState extends State<Profil> {
                 subtitle: 'En savoir plus sur les développeurs',
                 icon: Icons.help,
                 onTap: () => Navigator.pushNamed(context, '/about'),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const ThemeSettingsWidget(),
+              const SizedBox(
+                height: 20,
               ),
               if (token.isNotEmpty)
                 _buildListItem(

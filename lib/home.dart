@@ -134,10 +134,30 @@ class _HomeState extends State<Home> {
               const SizedBox(height: 16),
               ElevatedButton.icon(
                 onPressed: _loadEvents,
-                icon: const Icon(Icons.refresh),
+                icon: Icon(
+                  Icons.refresh,
+                  color: Theme.of(context).colorScheme.onSecondary,
+                ),
                 label: Text(
                   'Réessayer',
                   style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context)
+                      .colorScheme
+                      .secondary, // Background color
+                  foregroundColor: Theme.of(context)
+                      .colorScheme
+                      .onSecondary, // Text & icon color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12), // Rounded corners
+                    side: BorderSide(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface, // Border color
+                      width: 0.7, // Border thickness
+                    ),
+                  ),
                 ),
               ),
             ],

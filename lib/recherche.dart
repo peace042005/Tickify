@@ -144,20 +144,27 @@ class _RechercheState extends State<Recherche> {
                         controller: _searchController,
                         decoration: InputDecoration(
                           hintText: 'Rechercher...',
-                          border: InputBorder.none,
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
-                                width: 0.5),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
-                                width: 2.0),
+                          hintStyle: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withOpacity(0.7)),
+                          filled: true,
+                          fillColor: Theme.of(context)
+                              .colorScheme
+                              .onSecondary
+                              .withOpacity(0.2),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 14.0, horizontal: 16.0),
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.circular(12), // Rounded corners
+                            borderSide: BorderSide.none, // No border
                           ),
                         ),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface),
+                        cursorColor: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ),
