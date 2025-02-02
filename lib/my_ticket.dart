@@ -70,7 +70,14 @@ class _MyTicketState extends State<MyTicket> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Text("My Tickets"),
+        title: const Text("Mes Tickets"),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.1), // Thickness of the border
+          child: Container(
+            color: Theme.of(context).colorScheme.onSurface,
+            height: 0.1, // Thickness
+          ),
+        ),
       ),
       body: _buildBody(),
     );
