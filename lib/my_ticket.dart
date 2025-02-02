@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:groupe03_application/components/ticket_card.dart';
 import 'package:groupe03_application/data/services/ticket_service.dart';
 import 'package:groupe03_application/data/models/ticket.dart';
 import 'package:groupe03_application/login.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Formatage des dates
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyTicket extends StatefulWidget {
   const MyTicket({super.key});
@@ -15,17 +15,15 @@ class MyTicket extends StatefulWidget {
 }
 
 class _MyTicketState extends State<MyTicket> {
-  List<Ticket> tickets = [];
+  List<Data> ticketData = [];
   final TicketService ticketService = TicketService();
   bool isLoading = true;
 
-  // Vérification de l'authentification
   Future<void> checkAuth() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token") ?? '';
 
-    if (token == "") {
-      // Rediriger vers la page de connexion
+    if (token.isEmpty) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const Login()),
@@ -39,22 +37,21 @@ class _MyTicketState extends State<MyTicket> {
     await checkAuth();
   }
 
-  // Chargement des tickets
   loadTickets() async {
     try {
       setState(() {
         isLoading = true;
       });
-      final ticketList = await ticketService.all();
 
+      final ticketResponse = await ticketService.all();
       setState(() {
-        // Trier les tickets du plus récent au plus ancien
-        tickets = ticketList
-          ..sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+        ticketData = ticketResponse.data ?? [];
+        ticketData
+            .sort((a, b) => (b.createdAt ?? '').compareTo(a.createdAt ?? ''));
       });
     } on DioException catch (e) {
-      print("Erreur API : ${e.response?.data}");
-      Fluttertoast.showToast(msg: "Erreur lors du chargement des tickets");
+      print("API Error: \${e.response?.data}");
+      Fluttertoast.showToast(msg: "Error loading tickets");
     } finally {
       setState(() {
         isLoading = false;
@@ -73,14 +70,7 @@ class _MyTicketState extends State<MyTicket> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Text("Mes Tickets"),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(0.1), // Thickness of the border
-          child: Container(
-            color: Theme.of(context).colorScheme.onSurface,
-            height: 0.1, // Thickness
-          ),
-        ),
+        title: const Text("My Tickets"),
       ),
       body: _buildBody(),
     );
@@ -95,65 +85,19 @@ class _MyTicketState extends State<MyTicket> {
       );
     }
 
-    if (tickets.isEmpty) {
+    if (ticketData.isEmpty) {
       return const Center(
         child: Text(
-          "Aucun ticket disponible",
+          "No tickets available",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       );
     }
 
-    return Column(
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical, // Permet le scroll vertical
-            child: SingleChildScrollView(
-              scrollDirection:
-                  Axis.horizontal, // Permet le scroll horizontal si besoin
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width, // Largeur maximale
-                child: DataTable(
-                  columnSpacing: 30, // Espacement entre les colonnes
-                  border: TableBorder.all(width: 1, color: Colors.grey),
-                  columns: const [
-                    DataColumn(
-                        label: Text("N",
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text("Statut",
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text("Acheté le",
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                  ],
-                  rows: tickets
-                      .asMap()
-                      .map(
-                        (index, ticket) => MapEntry(
-                          index,
-                          DataRow(
-                            cells: [
-                              DataCell(Text((index + 1)
-                                  .toString())), // Affiche l'index + 1
-                              DataCell(Text(ticket.statut ?? "Inconnu")),
-                              DataCell(Text(
-                                DateFormat('dd/MM/yyyy HH:mm')
-                                    .format(DateTime.parse(ticket.createdAt!)),
-                              )),
-                            ],
-                          ),
-                        ),
-                      )
-                      .values
-                      .toList(),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
+    return ListView.builder(
+      padding: const EdgeInsets.all(16.0),
+      itemCount: ticketData.length,
+      itemBuilder: (context, index) => TicketCard(ticket: ticketData[index]),
     );
   }
 }

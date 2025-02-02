@@ -4,97 +4,108 @@ import 'package:groupe03_application/data/models/evenement.dart';
 class EvenementCard extends StatelessWidget {
   final Data event;
   final String Function(String?) formatDate;
+  final VoidCallback? onTap;
 
-  const EvenementCard(
-      {super.key, required this.event, required this.formatDate});
+  const EvenementCard({
+    super.key,
+    required this.event,
+    required this.formatDate,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      clipBehavior: Clip.antiAlias,
-      elevation: 8,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (event.images != null && event.images!.isNotEmpty)
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12)),
-                child: Image.network(
-                  event.images!.first.url ?? '',
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.error),
-                    );
-                  },
+      elevation: 1,
+      margin: const EdgeInsets.all(8),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.onSecondary,
+            width: 0.3,
+          )),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (event.images != null && event.images!.isNotEmpty)
+              ClipRRect(
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(8)),
+                child: AspectRatio(
+                  aspectRatio: 3 / 2,
+                  child: Image.network(
+                    event.images!.first.url ?? '',
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: Colors.grey[200],
+                        child: Icon(Icons.image,
+                            color: Theme.of(context).colorScheme.onSecondary),
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  event.nom ?? 'Sans titre',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  event.description ?? 'Aucune description',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 16),
-                if (event.lieu != null) ...[
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    event.nom ?? 'Sans titre',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.location_on,
-                          size: 16, color: Colors.blue),
+                      Icon(
+                        Icons.calendar_today,
+                        size: 14,
+                        color: Theme.of(context).colorScheme.onSecondary,
+                      ),
                       const SizedBox(width: 4),
-                      Text(event.lieu!,
-                          style: const TextStyle(color: Colors.blue)),
+                      Expanded(
+                        child: Text(
+                          formatDate(event.dateDebut) ?? '',
+                          style: Theme.of(context).textTheme.bodySmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 8),
-                ],
-                Row(
-                  children: [
-                    const Icon(Icons.calendar_today,
-                        size: 16, color: Colors.blue),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        'Du ${formatDate(event.dateDebut)} au ${formatDate(event.dateFin)}',
-                        style: const TextStyle(color: Colors.blue),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(Icons.local_activity,
+                          size: 14,
+                          color: Theme.of(context).colorScheme.onSecondary),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          // '${event.nombreTickets ?? 0} tickets',
+                          event.nombreTickets == 0
+                              ? 'Épuisé'
+                              : '${event.nombreTickets} tickets',
+                          style: Theme.of(context).textTheme.bodySmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    const Icon(Icons.confirmation_number,
-                        size: 16, color: Colors.blue),
-                    const SizedBox(width: 4),
-                    Text('${event.nombreTickets ?? 0} tickets disponibles'),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

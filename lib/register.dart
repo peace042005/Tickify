@@ -76,13 +76,13 @@ class _RegisterState extends State<Register> {
       }
     } on DioException catch (e) {
       if (e.response != null) {
-        print("Null response");
-        print(e.response?.data);
-        print(e.response?.statusCode);
+        // print("Null response");
+        // print(e.response?.data);
+        // print(e.response?.statusCode);
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
-        print(e.message);
+        // print(e.requestOptions);
+        // print(e.message);
       }
 
       Fluttertoast.showToast(

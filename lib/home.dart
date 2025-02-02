@@ -96,6 +96,8 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: RefreshIndicator(
+        color: Theme.of(context).colorScheme.secondary,
+        backgroundColor: Theme.of(context).colorScheme.onSecondary,
         onRefresh: _loadEvents,
         child: _buildBody(),
       ),
@@ -174,11 +176,29 @@ class _HomeState extends State<Home> {
     }
 
     // Construire le contenu de la page
-    return ListView.builder(
+    // return ListView.builder(
+    //   padding: const EdgeInsets.all(16),
+    //   itemCount: _events.length,
+    //   itemBuilder: (context, index) =>
+    //       EvenementCard(event: _events[index], formatDate: _formatDate),
+    // );
+
+    return GridView.builder(
       padding: const EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.8,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+      ),
       itemCount: _events.length,
-      itemBuilder: (context, index) =>
-          EvenementCard(event: _events[index], formatDate: _formatDate),
+      itemBuilder: (context, index) => EvenementCard(
+        event: _events[index],
+        formatDate: _formatDate,
+        onTap: () {
+          // Handle your tap event here
+        },
+      ),
     );
   }
 }
