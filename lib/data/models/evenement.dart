@@ -10,12 +10,27 @@ class Evenement {
 
   Evenement({this.data});
 
+  // Evenement.fromJson(Map<String, dynamic> json) {
+  //   if (json['data'] != null) {
+  //     data = <Data>[];
+  //     json['data'].forEach((v) {
+  //       data!.add(Data.fromJson(v));
+  //     });
+  //   }
+  // }
+
   Evenement.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
       data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
-      });
+      if (json['data'] is List) {
+        // Handle array response (for getEvenements)
+        json['data'].forEach((v) {
+          data!.add(Data.fromJson(v));
+        });
+      } else {
+        // Handle single object response (for selectEvenement)
+        data!.add(Data.fromJson(json['data']));
+      }
     }
   }
 

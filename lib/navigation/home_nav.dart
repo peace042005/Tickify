@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupe03_application/evenement_detail.dart';
 import 'package:groupe03_application/home.dart';
 
 class HomeNav extends StatefulWidget {
@@ -19,12 +20,16 @@ class _HomeNavState extends State<HomeNav> {
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) {
-            if (settings.name == "" /* /eventDetail*/) {
-              // return the page that is supposed to display
-              // details about an event.
-              // on the press of the event in the list just remember to
-              // do onPressed: () => Navigator.pushNamed(context, '/eventDetail')
-              return Container();
+            if (settings.name == "/details") {
+              // return Container();
+              // return EvenementDetail(evenementId: settings.arguments as int);
+              final arguments = settings.arguments;
+
+              if (arguments is int) {
+                return EvenementDetail(evenementId: arguments);
+              }
+
+              throw ArgumentError('Expected int for evenementId');
             }
 
             return const Home();

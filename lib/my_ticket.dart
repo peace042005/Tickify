@@ -95,7 +95,7 @@ class _MyTicketState extends State<MyTicket> {
     if (ticketData.isEmpty) {
       return const Center(
         child: Text(
-          "No tickets available",
+          "Aucun ticket acheté",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       );
