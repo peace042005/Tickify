@@ -19,6 +19,60 @@ class _MyTicketState extends State<MyTicket> {
   final TicketService ticketService = TicketService();
   bool isLoading = true;
 
+  // In _MyTicketState class
+  Future<void> _handleDeleteTicket(int ticketId) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmer la suppression'),
+        content: const Text('Voulez-vous vraiment supprimer ce ticket ?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Supprimer', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      try {
+        final success = await ticketService.delete(id: ticketId);
+
+        if (success) {
+          Fluttertoast.showToast(
+            msg: "Ticket supprimé avec succès",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+          );
+          loadTickets(); // Refresh the list
+        } else {
+          Fluttertoast.showToast(
+            msg: "Échec de la suppression",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+        }
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: "Erreur lors de la suppression",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
+    }
+  }
+
   Future<void> checkAuth() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token") ?? '';
@@ -104,7 +158,10 @@ class _MyTicketState extends State<MyTicket> {
     return ListView.builder(
       padding: const EdgeInsets.all(16.0),
       itemCount: ticketData.length,
-      itemBuilder: (context, index) => TicketCard(ticket: ticketData[index]),
+      itemBuilder: (context, index) => TicketCard(
+        ticket: ticketData[index],
+        onDelete: _handleDeleteTicket,
+      ),
     );
   }
 }

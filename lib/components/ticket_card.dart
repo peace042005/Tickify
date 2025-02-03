@@ -4,8 +4,13 @@ import 'package:intl/intl.dart';
 
 class TicketCard extends StatelessWidget {
   final Data ticket;
+  final Function(int) onDelete;
 
-  const TicketCard({super.key, required this.ticket});
+  const TicketCard({
+    super.key,
+    required this.ticket,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -137,6 +142,24 @@ class TicketCard extends StatelessWidget {
                         ),
                       ],
                     ),
+                  ElevatedButton(
+                    onPressed: () =>
+                        onDelete(ticket.id ?? -1), // Changed to use a callback
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                          width: 0.2,
+                        ),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                  ),
                 ],
               ),
             ],

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:groupe03_application/data/services/evenement_service.dart';
 import 'package:groupe03_application/data/models/evenement.dart';
+import 'package:groupe03_application/data/services/ticket_service.dart';
+import 'package:groupe03_application/login.dart';
+import 'package:groupe03_application/util/check_auth.dart';
 import 'package:intl/intl.dart'; // Add this for date formatting
 
 class EvenementDetail extends StatefulWidget {
@@ -16,6 +19,50 @@ class _EvenementDetailState extends State<EvenementDetail> {
   late Future<Evenement> evenement;
   final PageController _pageController = PageController();
   int _currentPage = 0;
+
+  Future<bool> _showConfirmationDialog(String ticketName) async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Confirmer l\'achat'),
+              content:
+                  Text('Voulez-vous vraiment acheter le billet "$ticketName"?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('Annuler'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('Confirmer'),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+  }
+
+  Future<bool> _buyTicket(int id) async {
+    if (await userLoggedIn()) {
+      try {
+        TicketService ticketService = TicketService();
+        final success = await ticketService.buy(id: id);
+        return success;
+      } catch (e) {
+        return false;
+      }
+    } else {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Login()),
+        );
+      }
+      return false;
+    }
+  }
 
   @override
   void initState() {
@@ -36,6 +83,7 @@ class _EvenementDetailState extends State<EvenementDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Text('Détails de l\'événement'),
         bottom: PreferredSize(
@@ -291,15 +339,35 @@ class _EvenementDetailState extends State<EvenementDetail> {
                                       ),
                                       const SizedBox(height: 12),
                                       ElevatedButton(
-                                        onPressed: () {
-                                          // Add your purchase logic here
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                  'Achat du billet ${ticket.nom} en cours...'),
-                                            ),
-                                          );
+                                        onPressed: () async {
+                                          final confirmed =
+                                              await _showConfirmationDialog(
+                                                  ticket.nom ?? '');
+                                          if (!confirmed) return;
+
+                                          final success =
+                                              await _buyTicket(ticket.id!);
+                                          if (!mounted) return;
+
+                                          if (success) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                    'Billet ${ticket.nom} acheté avec succès!'),
+                                                backgroundColor: Colors.green,
+                                              ),
+                                            );
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    'Échec de l\'achat. Veuillez réessayer.'),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                          }
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Theme.of(context)
