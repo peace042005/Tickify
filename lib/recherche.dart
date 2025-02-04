@@ -67,9 +67,6 @@ class _RechercheState extends State<Recherche> {
       String url = 'evenements${queryString.isNotEmpty ? '?$queryString' : ''}';
 
       final response = await _evenementService.api.get(url);
-      print(queryParams);
-      print(queryString);
-      print(response);
 
       setState(() {
         if (response.data is Map<String, dynamic> &&
@@ -127,8 +124,16 @@ class _RechercheState extends State<Recherche> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Text("Rechercher"),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.1),
+          child: Container(
+            color: Theme.of(context).colorScheme.onSurface,
+            height: 0.1,
+          ),
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
