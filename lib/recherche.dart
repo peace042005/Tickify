@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:groupe03_application/components/evenement_card.dart';
 import 'package:groupe03_application/data/models/evenement.dart';
 import 'package:groupe03_application/data/services/evenement_service.dart';
 
@@ -80,13 +81,13 @@ class _RechercheState extends State<Recherche> {
         _isLoading = false;
       });
     } on DioException catch (e) {
-      print('Error fetching events: ${e.message}');
+      // print('Error fetching events: ${e.message}');
       setState(() {
         _error = _handleDioError(e);
         _isLoading = false;
       });
     } catch (e) {
-      print('Unexpected error: $e');
+      // print('Unexpected error: $e');
       setState(() {
         _error = 'Une erreur inattendue est survenue';
         _isLoading = false;
@@ -149,20 +150,27 @@ class _RechercheState extends State<Recherche> {
                         controller: _searchController,
                         decoration: InputDecoration(
                           hintText: 'Rechercher...',
-                          border: InputBorder.none,
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
-                                width: 0.5),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
-                                width: 2.0),
+                          hintStyle: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withOpacity(0.7)),
+                          filled: true,
+                          fillColor: Theme.of(context)
+                              .colorScheme
+                              .onSecondary
+                              .withOpacity(0.2),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 14.0, horizontal: 16.0),
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.circular(12), // Rounded corners
+                            borderSide: BorderSide.none, // No border
                           ),
                         ),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface),
+                        cursorColor: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ),
@@ -306,103 +314,24 @@ class _RechercheState extends State<Recherche> {
       );
     }
 
-    return ListView.builder(
+    return GridView.builder(
       padding: const EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.8,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+      ),
       itemCount: _events.length,
-      itemBuilder: (context, index) {
-        final event = _events[index];
-        return Card(
-          margin: const EdgeInsets.only(bottom: 16),
-          clipBehavior: Clip.antiAlias,
-          elevation: 8, // Ombre autour de la carte
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (event.images != null && event.images!.isNotEmpty)
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12)),
-                    child: Image.network(
-                      event.images!.first.url ?? '',
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.grey[300],
-                          child: const Icon(Icons.error),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      event.nom ?? 'Sans titre',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      event.description ?? 'Aucune description',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(color: Colors.black54),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 16),
-                    if (event.lieu != null) ...[
-                      Row(
-                        children: [
-                          const Icon(Icons.location_on,
-                              size: 16, color: Colors.blue),
-                          const SizedBox(width: 4),
-                          Text(event.lieu!,
-                              style: const TextStyle(color: Colors.blue)),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                    ],
-                    Row(
-                      children: [
-                        const Icon(Icons.calendar_today,
-                            size: 16, color: Colors.blue),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            'Du ${_formatDate(event.dateDebut)} au ${_formatDate(event.dateFin)}',
-                            style: const TextStyle(color: Colors.blue),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        const Icon(Icons.confirmation_number,
-                            size: 16, color: Colors.blue),
-                        const SizedBox(width: 4),
-                        Text('${event.nombreTickets ?? 0} tickets disponibles'),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
+      itemBuilder: (context, index) => EvenementCard(
+        event: _events[index],
+        formatDate: _formatDate,
+        onTap: () => Navigator.pushNamed(
+          context,
+          '/details',
+          arguments: _events[index].id,
+        ),
+      ),
     );
   }
 }

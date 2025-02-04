@@ -96,6 +96,8 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: RefreshIndicator(
+        color: Theme.of(context).colorScheme.secondary,
+        backgroundColor: Theme.of(context).colorScheme.onSecondary,
         onRefresh: _loadEvents,
         child: _buildBody(),
       ),
@@ -134,10 +136,30 @@ class _HomeState extends State<Home> {
               const SizedBox(height: 16),
               ElevatedButton.icon(
                 onPressed: _loadEvents,
-                icon: const Icon(Icons.refresh),
+                icon: Icon(
+                  Icons.refresh,
+                  color: Theme.of(context).colorScheme.onSecondary,
+                ),
                 label: Text(
                   'Réessayer',
                   style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context)
+                      .colorScheme
+                      .secondary, // Background color
+                  foregroundColor: Theme.of(context)
+                      .colorScheme
+                      .onSecondary, // Text & icon color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12), // Rounded corners
+                    side: BorderSide(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface, // Border color
+                      width: 0.7, // Border thickness
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -153,12 +175,69 @@ class _HomeState extends State<Home> {
       );
     }
 
-    // Construire le contenu de la page
-    return ListView.builder(
+    return GridView.builder(
       padding: const EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.8,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+      ),
       itemCount: _events.length,
-      itemBuilder: (context, index) =>
-          EvenementCard(event: _events[index], formatDate: _formatDate),
+      itemBuilder: (context, index) => EvenementCard(
+        event: _events[index],
+        formatDate: _formatDate,
+        onTap: () => Navigator.pushNamed(
+          context,
+          '/details',
+          arguments: _events[index].id,
+        ),
+      ),
     );
+
+    // return LayoutBuilder(
+    //   builder: (context, constraints) {
+    //     const crossAxisCount = 2;
+    //     final itemWidth =
+    //         (constraints.maxWidth - (crossAxisCount - 1) * 8) / crossAxisCount;
+
+    //     return GridView.builder(
+    //       padding: const EdgeInsets.all(16),
+    //       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    //         crossAxisCount: crossAxisCount,
+    //         childAspectRatio: 0.8,
+    //         crossAxisSpacing: 8,
+    //         mainAxisSpacing: 8,
+    //         mainAxisExtent:
+    //             itemWidth / 0.8, // Calculate height based on aspect ratio
+    //       ),
+    //       itemCount: _events.length,
+    //       itemBuilder: (context, index) {
+    //         final isLastItem = index == _events.length - 1;
+    //         final isOddCount = _events.length % crossAxisCount == 1;
+
+    //         return LayoutBuilder(
+    //           builder: (context, constraints) {
+    //             final width =
+    //                 isLastItem && isOddCount ? constraints.maxWidth : itemWidth;
+
+    //             return SizedBox(
+    //               width: width,
+    //               child: EvenementCard(
+    //                 event: _events[index],
+    //                 formatDate: _formatDate,
+    //                 onTap: () => Navigator.pushNamed(
+    //                   context,
+    //                   '/details',
+    //                   arguments: _events[index].id,
+    //                 ),
+    //               ),
+    //             );
+    //           },
+    //         );
+    //       },
+    //     );
+    //   },
+    // );
   }
 }

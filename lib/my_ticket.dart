@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:groupe03_application/components/ticket_card.dart';
 import 'package:groupe03_application/data/services/ticket_service.dart';
 import 'package:groupe03_application/data/models/ticket.dart';
 import 'package:groupe03_application/login.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Formatage des dates
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyTicket extends StatefulWidget {
   const MyTicket({super.key});
@@ -15,17 +15,69 @@ class MyTicket extends StatefulWidget {
 }
 
 class _MyTicketState extends State<MyTicket> {
-  List<Ticket> tickets = [];
+  List<Data> ticketData = [];
   final TicketService ticketService = TicketService();
   bool isLoading = true;
 
-  // Vérification de l'authentification
+  // In _MyTicketState class
+  Future<void> _handleDeleteTicket(int ticketId) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmer la suppression'),
+        content: const Text('Voulez-vous vraiment supprimer ce ticket ?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Supprimer', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      try {
+        final success = await ticketService.delete(id: ticketId);
+
+        if (success) {
+          Fluttertoast.showToast(
+            msg: "Ticket supprimé avec succès",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+          );
+          loadTickets(); // Refresh the list
+        } else {
+          Fluttertoast.showToast(
+            msg: "Échec de la suppression",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+        }
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: "Erreur lors de la suppression",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
+    }
+  }
+
   Future<void> checkAuth() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token") ?? '';
 
-    if (token == "") {
-      // Rediriger vers la page de connexion
+    if (token.isEmpty) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const Login()),
@@ -39,22 +91,21 @@ class _MyTicketState extends State<MyTicket> {
     await checkAuth();
   }
 
-  // Chargement des tickets
   loadTickets() async {
     try {
       setState(() {
         isLoading = true;
       });
-      final ticketList = await ticketService.all();
 
+      final ticketResponse = await ticketService.all();
       setState(() {
-        // Trier les tickets du plus récent au plus ancien
-        tickets = ticketList
-          ..sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+        ticketData = ticketResponse.data ?? [];
+        ticketData
+            .sort((a, b) => (b.createdAt ?? '').compareTo(a.createdAt ?? ''));
       });
     } on DioException catch (e) {
-      print("Erreur API : ${e.response?.data}");
-      Fluttertoast.showToast(msg: "Erreur lors du chargement des tickets");
+      print("API Error: \${e.response?.data}");
+      Fluttertoast.showToast(msg: "Error loading tickets");
     } finally {
       setState(() {
         isLoading = false;
@@ -95,65 +146,22 @@ class _MyTicketState extends State<MyTicket> {
       );
     }
 
-    if (tickets.isEmpty) {
+    if (ticketData.isEmpty) {
       return const Center(
         child: Text(
-          "Aucun ticket disponible",
+          "Aucun ticket acheté",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       );
     }
 
-    return Column(
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical, // Permet le scroll vertical
-            child: SingleChildScrollView(
-              scrollDirection:
-                  Axis.horizontal, // Permet le scroll horizontal si besoin
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width, // Largeur maximale
-                child: DataTable(
-                  columnSpacing: 30, // Espacement entre les colonnes
-                  border: TableBorder.all(width: 1, color: Colors.grey),
-                  columns: const [
-                    DataColumn(
-                        label: Text("N",
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text("Statut",
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text("Acheté le",
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                  ],
-                  rows: tickets
-                      .asMap()
-                      .map(
-                        (index, ticket) => MapEntry(
-                          index,
-                          DataRow(
-                            cells: [
-                              DataCell(Text((index + 1)
-                                  .toString())), // Affiche l'index + 1
-                              DataCell(Text(ticket.statut ?? "Inconnu")),
-                              DataCell(Text(
-                                DateFormat('dd/MM/yyyy HH:mm')
-                                    .format(DateTime.parse(ticket.createdAt!)),
-                              )),
-                            ],
-                          ),
-                        ),
-                      )
-                      .values
-                      .toList(),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
+    return ListView.builder(
+      padding: const EdgeInsets.all(16.0),
+      itemCount: ticketData.length,
+      itemBuilder: (context, index) => TicketCard(
+        ticket: ticketData[index],
+        onDelete: _handleDeleteTicket,
+      ),
     );
   }
 }

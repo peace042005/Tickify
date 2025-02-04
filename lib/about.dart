@@ -58,21 +58,21 @@ class About extends StatelessWidget {
             icon: Icons.palette,
             chef: false,
             name: "KOUKPOLOU Miséricorde",
-            role: "Vide",
+            role: "Étudiant",
             contributions: [
               "Page de recherche",
             ],
-            message: "Message vide",
+            message: "Science sans conscience n'est que ruine de l'âme - François Rabelais",
           ),
           TeamMemberTile(
             icon: Icons.security,
             chef: false,
             name: "CHANHOUN Marcella",
-            role: "Vide",
+            role: "Étudiante",
             contributions: [
               "Page d'affichage des tickets achetés",
             ],
-            message: "Message vide",
+            message: "Je suis actuellement en fin de formation en Analyse Informatique et Programmation. Travailler sur ce projet avec mes camarades a été une expérience enrichissante et gratifiante, et j'ai été ravie de pouvoir mettre en pratique mes compétences tout en contribuant à notre travail d'équipe.",
           ),
           TeamMemberTile(
             icon: Icons.psychology,
