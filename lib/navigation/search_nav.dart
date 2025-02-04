@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupe03_application/evenement_detail.dart';
 import 'package:groupe03_application/recherche.dart';
 
 class SearchNav extends StatefulWidget {
@@ -16,8 +17,14 @@ class _SearchNavState extends State<SearchNav> {
       key: widget.navigatorKey,
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute(builder: (BuildContext context) {
-          if (settings.name == "") {
-            return Container();
+          if (settings.name == "/details") {
+            final arguments = settings.arguments;
+
+            if (arguments is int) {
+              return EvenementDetail(evenementId: arguments);
+            }
+
+            throw ArgumentError('Expected int for evenementId');
           }
 
           return const Recherche();

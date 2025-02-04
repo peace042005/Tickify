@@ -321,9 +321,11 @@ class _RechercheState extends State<Recherche> {
       itemBuilder: (context, index) => EvenementCard(
         event: _events[index],
         formatDate: _formatDate,
-        onTap: () {
-          // Handle your tap event here
-        },
+        onTap: () => Navigator.pushNamed(
+          context,
+          '/details',
+          arguments: _events[index].id,
+        ),
       ),
     );
   }

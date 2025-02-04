@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:groupe03_application/data/models/evenement.dart';
 
@@ -36,16 +37,31 @@ class EvenementCard extends StatelessWidget {
                     const BorderRadius.vertical(top: Radius.circular(8)),
                 child: AspectRatio(
                   aspectRatio: 3 / 2,
-                  child: Image.network(
-                    event.images!.first.url ?? '',
+                  // child: Image.network(
+                  //   event.images!.first.url ?? '',
+                  //   fit: BoxFit.cover,
+                  //   errorBuilder: (context, error, stackTrace) {
+                  //     return Container(
+                  //       color: Colors.grey[200],
+                  //       child: Icon(Icons.image,
+                  //           color: Theme.of(context).colorScheme.onSecondary),
+                  //     );
+                  //   },
+                  // ),
+                  child: CachedNetworkImage(
+                    imageUrl: event.images!.first.url ?? '',
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Colors.grey[200],
-                        child: Icon(Icons.image,
-                            color: Theme.of(context).colorScheme.onSecondary),
-                      );
-                    },
+                    memCacheWidth: 600, // Optimize memory usage
+                    cacheKey: event.images!.first.url, // Unique cache key
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey[200],
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.grey[200],
+                      child: Icon(Icons.image,
+                          color: Theme.of(context).colorScheme.onSecondary),
+                    ),
                   ),
                 ),
               ),
@@ -73,7 +89,7 @@ class EvenementCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
-                          formatDate(event.dateDebut) ?? '',
+                          formatDate(event.dateDebut),
                           style: Theme.of(context).textTheme.bodySmall,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

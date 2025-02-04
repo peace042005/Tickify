@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:groupe03_application/data/services/evenement_service.dart';
 import 'package:groupe03_application/data/models/evenement.dart';
@@ -85,7 +86,7 @@ class _EvenementDetailState extends State<EvenementDetail> {
       final date = DateTime.parse(dateString);
       return '${date.day.toString().padLeft(2, '0')}/'
           '${date.month.toString().padLeft(2, '0')}/'
-          '${date.year} '
+          '${date.year} à '
           '${date.hour.toString().padLeft(2, '0')}:'
           '${date.minute.toString().padLeft(2, '0')}';
     } catch (e) {
@@ -114,13 +115,15 @@ class _EvenementDetailState extends State<EvenementDetail> {
         future: evenement,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 16),
-                  Text('Chargement en cours...'),
+                  CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Chargement en cours...'),
                 ],
               ),
             );
@@ -162,7 +165,6 @@ class _EvenementDetailState extends State<EvenementDetail> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Image Carousel
                 if (evenementData.images != null &&
                     evenementData.images!.isNotEmpty)
                   Padding(
@@ -178,10 +180,20 @@ class _EvenementDetailState extends State<EvenementDetail> {
                               itemCount: evenementData.images!.length,
                               onPageChanged: (index) =>
                                   setState(() => _currentPage = index),
-                              itemBuilder: (context, index) => Image.network(
-                                evenementData.images![index].url ?? '',
+                              itemBuilder: (context, index) =>
+                                  CachedNetworkImage(
+                                imageUrl:
+                                    evenementData.images![index].url ?? '',
                                 fit: BoxFit.cover,
-                                errorBuilder: (_, __, ___) => Container(
+                                memCacheWidth: 600, // Optimize for device width
+                                cacheKey: evenementData.images![index].url,
+                                placeholder: (context, url) => Container(
+                                  color: Colors.grey[200],
+                                  child: const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) => Container(
                                   color: Theme.of(context)
                                       .colorScheme
                                       .secondaryContainer,
@@ -228,7 +240,6 @@ class _EvenementDetailState extends State<EvenementDetail> {
                       ),
                     ),
                   ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
