@@ -141,6 +141,7 @@ class _RechercheState extends State<Recherche> {
         children: [
           Column(
             children: [
+              const SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
