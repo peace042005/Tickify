@@ -36,10 +36,10 @@ class About extends StatelessWidget {
             name: "TCHASSOU Léonel",
             role: "Étudiant",
             contributions: [
-              "API",
+              "API et documentation",
               "Pages d'authentification",
               "Page profil",
-              "Navigation"
+              "Navigation et thèmes"
             ],
             message: "Temporairement vide",
           ),
