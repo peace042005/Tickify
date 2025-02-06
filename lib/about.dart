@@ -61,6 +61,7 @@ class About extends StatelessWidget {
             role: "Étudiant",
             contributions: [
               "Page de recherche",
+              "Déploiement de l'API",
             ],
             message:
                 "Science sans conscience n'est que ruine de l'âme - François Rabelais",
