@@ -85,7 +85,7 @@ class TicketCard extends StatelessWidget {
               if (event?.lieu != null)
                 _InfoRow(
                   icon: Icons.location_pin,
-                  label: "Venue:",
+                  label: "Lieu:",
                   value: event!.lieu!,
                 ),
 

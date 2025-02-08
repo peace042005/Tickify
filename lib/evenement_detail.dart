@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:groupe03_application/components/image_carousel.dart';
 import 'package:groupe03_application/data/services/evenement_service.dart';
 import 'package:groupe03_application/data/models/evenement.dart';
 import 'package:groupe03_application/data/services/ticket_service.dart';
@@ -17,8 +17,6 @@ class EvenementDetail extends StatefulWidget {
 
 class _EvenementDetailState extends State<EvenementDetail> {
   late Future<Evenement> evenement;
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
 
   Future<bool> _showConfirmationDialog(String ticketName) async {
     return await showDialog<bool>(
@@ -31,10 +29,16 @@ class _EvenementDetailState extends State<EvenementDetail> {
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.onSurface,
+                  ),
                   child: const Text('Annuler'),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.green,
+                  ),
                   child: const Text('Confirmer'),
                 ),
               ],
@@ -69,16 +73,6 @@ class _EvenementDetailState extends State<EvenementDetail> {
     super.initState();
     evenement = EvenementService().selectEvenement(id: widget.evenementId);
   }
-
-  // String _formatDate(String? dateString) {
-  //   if (dateString == null) return 'Date non spécifiée';
-  //   try {
-  //     final date = DateTime.parse(dateString);
-  //     return DateFormat('dd MMM yyyy HH:mm', 'fr_FR').format(date);
-  //   } catch (e) {
-  //     return dateString;
-  //   }
-  // }
 
   String _formatDate(String? dateString) {
     if (dateString == null) return 'Date non définie';
@@ -171,72 +165,14 @@ class _EvenementDetailState extends State<EvenementDetail> {
                     padding: const EdgeInsets.all(16.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: SizedBox(
+                      // child: SizedBox(
+                      //   height: 280,
+                      //   child: _buildImageCarousel(evenementData.images!),
+                      // ),
+                      child: ImageCarousel(
+                        images: evenementData.images!,
                         height: 280,
-                        child: Stack(
-                          children: [
-                            PageView.builder(
-                              controller: _pageController,
-                              itemCount: evenementData.images!.length,
-                              onPageChanged: (index) =>
-                                  setState(() => _currentPage = index),
-                              itemBuilder: (context, index) =>
-                                  CachedNetworkImage(
-                                imageUrl:
-                                    evenementData.images![index].url ?? '',
-                                fit: BoxFit.cover,
-                                memCacheWidth: 600, // Optimize for device width
-                                cacheKey: evenementData.images![index].url,
-                                placeholder: (context, url) => Container(
-                                  color: Colors.grey[200],
-                                  child: const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                ),
-                                errorWidget: (context, url, error) => Container(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondaryContainer,
-                                  child: Icon(Icons.broken_image,
-                                      size: 64,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer),
-                                ),
-                              ),
-                            ),
-                            if (evenementData.images!.length > 1)
-                              Positioned(
-                                bottom: 16,
-                                left: 0,
-                                right: 0,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(
-                                    evenementData.images!.length,
-                                    (index) => AnimatedContainer(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 4),
-                                      width: _currentPage == index ? 16 : 8,
-                                      height: 8,
-                                      decoration: BoxDecoration(
-                                        color: _currentPage == index
-                                            ? Theme.of(context)
-                                                .colorScheme
-                                                .onSecondary
-                                            : Theme.of(context)
-                                                .colorScheme
-                                                .inversePrimary,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
+                        borderRadius: 16,
                       ),
                     ),
                   ),
@@ -370,7 +306,7 @@ class _EvenementDetailState extends State<EvenementDetail> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              ticket.nom ?? "Type de billet",
+                                              ticket.nom ?? "Type de ticket",
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w600,

@@ -37,22 +37,23 @@ class About extends StatelessWidget {
             role: "Étudiant",
             contributions: [
               "API et documentation",
+              "Dashboard administrateur",
               "Pages d'authentification",
               "Page profil",
-              "Navigation et thèmes"
+              "Navigation et thèmes",
             ],
-            message: "Temporairement vide",
+            message: "Fier du résultat. Merci à tous pour la collaboration !",
           ),
           TeamMemberTile(
             icon: Icons.storage,
             chef: false,
             name: "ADEGNIKA Bushira",
-            role: "Vide",
+            role: "Étudiant",
             contributions: [
               "Page de details événements",
               "Mécanisme d'achat de tickets",
             ],
-            message: "Message vide",
+            message: "",
           ),
           TeamMemberTile(
             icon: Icons.palette,
@@ -73,6 +74,7 @@ class About extends StatelessWidget {
             role: "Étudiante",
             contributions: [
               "Page d'affichage des tickets achetés",
+              "Ajout des événements",
             ],
             message:
                 "Je suis actuellement en fin de formation en Analyse Informatique"
@@ -85,11 +87,17 @@ class About extends StatelessWidget {
             icon: Icons.psychology,
             chef: false,
             name: "TOGBE Isaac",
-            role: "Vide",
+            role: "Étudiant",
             contributions: [
               "Page d'affichage des évènements",
+              "Tests de l'application",
             ],
-            message: "Message vide",
+            message: "Je suis développeur web et je viens de me lancer dans le "
+                "développement mobile. Travailler sur ce projet en Flutter a "
+                "été une expérience extrêmement enrichissante, qui m’a donné "
+                "envie d’explorer encore plus cet univers. Mon objectif est "
+                "désormais de devenir un développeur d’exception, aussi bien en "
+                "web qu’en mobile.",
           ),
         ],
       ),

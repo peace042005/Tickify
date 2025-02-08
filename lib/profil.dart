@@ -147,12 +147,12 @@ class _ProfilState extends State<Profil> {
                 icon: Icons.receipt_long,
                 onTap: () => Navigator.pushNamed(context, '/myTickets'),
               ),
-              _buildListItem(
-                title: 'Paramètres',
-                subtitle: 'Modifier certaines valeurs de l\'application',
-                icon: Icons.settings,
-                onTap: () => Navigator.pushNamed(context, '/settings'),
-              ),
+              // _buildListItem(
+              //   title: 'Paramètres',
+              //   subtitle: 'Modifier certaines valeurs de l\'application',
+              //   icon: Icons.settings,
+              //   onTap: () => Navigator.pushNamed(context, '/settings'),
+              // ),
               _buildListItem(
                 title: 'A propos',
                 subtitle: 'En savoir plus sur les développeurs',
@@ -172,9 +172,40 @@ class _ProfilState extends State<Profil> {
                   icon: Icons.logout,
                   iconColor: Colors.red,
                   onTap: () async {
-                    await logout();
-                    setState(() {});
-                    await _loadUserData();
+                    // Montrer un dialogue de confirmation
+                    final bool? confirmed = await showDialog<bool>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Confirmation'),
+                          content: const Text(
+                              'Voulez-vous vraiment vous déconnecter ?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              style: TextButton.styleFrom(
+                                foregroundColor: Theme.of(context).colorScheme.onSurface,
+                              ),
+                              child: const Text('Annuler'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.red,
+                              ),
+                              child: const Text('Se déconnecter'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+                    // Only proceed with logout if user confirmed
+                    if (confirmed == true) {
+                      await logout();
+                      setState(() {});
+                      await _loadUserData();
+                    }
                   },
                 )
               else
