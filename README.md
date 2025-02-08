@@ -1,16 +1,23 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [groupe03_application](#groupe03_application)
+  - [Qu'est ce que c'est ?](#quest-ce-que-cest-)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # groupe03_application
 
-Projet de groupe 03 - ENEAM - 2025
+Projet du groupe 03 - ENEAM - 2025
 
-## Getting Started
+## Qu'est ce que c'est ?
 
-This project is a starting point for a Flutter application.
+Cette application Flutter permet aux utilisateurs de réserver des tickets pour
+divers événements en toute simplicité. Grâce à une interface intuitive, ils
+peuvent parcourir les événements disponibles, sélectionner des places et
+effectuer leur réservation en quelques clics. L'application communique avec
+une API pour récupérer les informations des événements et
+gérer les réservations.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [Documentation de l'API](https://documenter.getpostman.com/view/41012504/2sAYX6qNVW)
+- [Code source de l'API](https://gitlab.com/leonel.tchassou/groupe03-api)
