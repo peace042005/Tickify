@@ -50,6 +50,20 @@ class _HomeState extends State<Home> {
     }
   }
 
+  String _formatDate(String? dateString) {
+    if (dateString == null) return 'Date non définie';
+    try {
+      final date = DateTime.parse(dateString);
+      return '${date.day.toString().padLeft(2, '0')}/'
+          '${date.month.toString().padLeft(2, '0')}/'
+          '${date.year} à '
+          '${date.hour.toString().padLeft(2, '0')}:'
+          '${date.minute.toString().padLeft(2, '0')}';
+    } catch (e) {
+      return 'Date invalide';
+    }
+  }
+
   String _handleDioError(DioException e) {
     return switch (e.response?.statusCode) {
       404 => 'La ressource demandée n\'existe pas',
@@ -57,20 +71,6 @@ class _HomeState extends State<Home> {
       null => 'Impossible de se connecter au serveur',
       _ => 'Une erreur est survenue (${e.response?.statusCode})',
     };
-  }
-
-  String _formatDate(String? dateString) {
-    if (dateString == null) return 'Date non définie';
-    try {
-      final date = DateTime.parse(dateString);
-      return '${date.day.toString().padLeft(2, '0')}/'
-          '${date.month.toString().padLeft(2, '0')}/'
-          '${date.year} '
-          '${date.hour.toString().padLeft(2, '0')}:'
-          '${date.minute.toString().padLeft(2, '0')}';
-    } catch (e) {
-      return 'Date invalide';
-    }
   }
 
   @override

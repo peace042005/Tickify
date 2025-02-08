@@ -5,6 +5,7 @@ import 'package:groupe03_application/data/models/evenement.dart';
 import 'package:groupe03_application/data/services/ticket_service.dart';
 import 'package:groupe03_application/login.dart';
 import 'package:groupe03_application/util/check_auth.dart';
+import 'package:groupe03_application/util/format_date.dart';
 
 class EvenementDetail extends StatefulWidget {
   final int evenementId;
@@ -74,19 +75,19 @@ class _EvenementDetailState extends State<EvenementDetail> {
     evenement = EvenementService().selectEvenement(id: widget.evenementId);
   }
 
-  String _formatDate(String? dateString) {
-    if (dateString == null) return 'Date non définie';
-    try {
-      final date = DateTime.parse(dateString);
-      return '${date.day.toString().padLeft(2, '0')}/'
-          '${date.month.toString().padLeft(2, '0')}/'
-          '${date.year} à '
-          '${date.hour.toString().padLeft(2, '0')}:'
-          '${date.minute.toString().padLeft(2, '0')}';
-    } catch (e) {
-      return 'Date invalide';
-    }
-  }
+  // String _formatDate(String? dateString) {
+  //   if (dateString == null) return 'Date non définie';
+  //   try {
+  //     final date = DateTime.parse(dateString);
+  //     return '${date.day.toString().padLeft(2, '0')}/'
+  //         '${date.month.toString().padLeft(2, '0')}/'
+  //         '${date.year} à '
+  //         '${date.hour.toString().padLeft(2, '0')}:'
+  //         '${date.minute.toString().padLeft(2, '0')}';
+  //   } catch (e) {
+  //     return 'Date invalide';
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -217,7 +218,7 @@ class _EvenementDetailState extends State<EvenementDetail> {
                               _buildDetailRow(
                                 icon: Icons.calendar_today_outlined,
                                 text:
-                                    '${_formatDate(evenementData.dateDebut)} - ${_formatDate(evenementData.dateFin)}',
+                                    '${formatDate(evenementData.dateDebut)} au \n${formatDate(evenementData.dateFin)}',
                               ),
                               const Divider(height: 24),
                               _buildDetailRow(
