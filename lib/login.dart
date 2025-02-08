@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:groupe03_application/home.dart';
 import 'package:groupe03_application/profil.dart';
 import 'package:groupe03_application/register.dart';
 import 'package:groupe03_application/util/check_auth.dart';

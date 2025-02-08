@@ -29,10 +29,16 @@ class _MyTicketState extends State<MyTicket> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
+            ),
             child: const Text('Annuler'),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.red,
+            ),
             child: const Text('Supprimer', style: TextStyle(color: Colors.red)),
           ),
         ],

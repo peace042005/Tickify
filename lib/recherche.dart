@@ -18,6 +18,14 @@ class _RechercheState extends State<Recherche> {
   List<Data> _events = [];
   String? _error;
 
+  void _clearSearch() {
+    setState(() {
+      _searchController.clear();
+      _events = [];
+      _error = null;
+    });
+  }
+
   Map<String, dynamic> _buildQueryParams(String queryText) {
     Map<String, dynamic> params = {};
     bool hasKeyword = false; // Vérifie si un mot-clé a été utilisé
@@ -168,10 +176,22 @@ class _RechercheState extends State<Recherche> {
                                 BorderRadius.circular(12), // Rounded corners
                             borderSide: BorderSide.none, // No border
                           ),
+                          suffixIcon: _searchController.text.isNotEmpty
+                              ? IconButton(
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary,
+                                  ),
+                                  onPressed: _clearSearch,
+                                )
+                              : null,
                         ),
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.onSurface),
                         cursorColor: Theme.of(context).colorScheme.onSurface,
+                        onSubmitted: (_) => _searchEvents(),
                       ),
                     ),
                   ),

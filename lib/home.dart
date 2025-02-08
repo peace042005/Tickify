@@ -194,50 +194,5 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
-
-    // return LayoutBuilder(
-    //   builder: (context, constraints) {
-    //     const crossAxisCount = 2;
-    //     final itemWidth =
-    //         (constraints.maxWidth - (crossAxisCount - 1) * 8) / crossAxisCount;
-
-    //     return GridView.builder(
-    //       padding: const EdgeInsets.all(16),
-    //       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-    //         crossAxisCount: crossAxisCount,
-    //         childAspectRatio: 0.8,
-    //         crossAxisSpacing: 8,
-    //         mainAxisSpacing: 8,
-    //         mainAxisExtent:
-    //             itemWidth / 0.8, // Calculate height based on aspect ratio
-    //       ),
-    //       itemCount: _events.length,
-    //       itemBuilder: (context, index) {
-    //         final isLastItem = index == _events.length - 1;
-    //         final isOddCount = _events.length % crossAxisCount == 1;
-
-    //         return LayoutBuilder(
-    //           builder: (context, constraints) {
-    //             final width =
-    //                 isLastItem && isOddCount ? constraints.maxWidth : itemWidth;
-
-    //             return SizedBox(
-    //               width: width,
-    //               child: EvenementCard(
-    //                 event: _events[index],
-    //                 formatDate: _formatDate,
-    //                 onTap: () => Navigator.pushNamed(
-    //                   context,
-    //                   '/details',
-    //                   arguments: _events[index].id,
-    //                 ),
-    //               ),
-    //             );
-    //           },
-    //         );
-    //       },
-    //     );
-    //   },
-    // );
   }
 }

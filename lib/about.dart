@@ -53,7 +53,13 @@ class About extends StatelessWidget {
               "Page de details événements",
               "Mécanisme d'achat de tickets",
             ],
-            message: "",
+            message:
+                "Je suis ravi d'avoir fait partie du groupe 3 pour ce projet "
+                "Flutter. Cela m'a permis de mettre en pratique des concepts "
+                "que je n'avais pas eu l'occasion d'explorer en profondeur "
+                "pendant le cours. De plus, ce projet m'a donné l'opportunité "
+                "d'identifier mes lacunes et de mieux comprendre les domaines "
+                "dans lesquels je dois progresser.",
           ),
           TeamMemberTile(
             icon: Icons.palette,
