@@ -65,13 +65,9 @@ class _RegisterState extends State<Register> {
           gravity: ToastGravity.BOTTOM,
         );
 
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => const Home()),
-        // );
-        Navigator.of(context).pushAndRemoveUntil(
+        Navigator.pushReplacement(
+          context,
           MaterialPageRoute(builder: (context) => const Profil()),
-          (Route<dynamic> route) => false, // Remove all previous routes
         );
       }
     } on DioException catch (e) {
@@ -86,7 +82,8 @@ class _RegisterState extends State<Register> {
       }
 
       Fluttertoast.showToast(
-        msg: e.toString(),
+        msg: e.response?.data['message'] ??
+            "Une erreur est survenue lors de la création du compte",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,
@@ -110,6 +107,14 @@ class _RegisterState extends State<Register> {
         title: const Text(
           "Création de compte",
         ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.1), // Thickness of the border
+          child: Container(
+            color: Theme.of(context).colorScheme.onSurface,
+            height: 0.1, // Thickness
+          ),
+        ),
+        elevation: 0,
         // titleTextStyle: Theme.of(context).textTheme.titleMedium,
       ),
       body: SafeArea(

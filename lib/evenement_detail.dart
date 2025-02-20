@@ -60,7 +60,7 @@ class _EvenementDetailState extends State<EvenementDetail> {
       }
     } else {
       if (mounted) {
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Login()),
         );

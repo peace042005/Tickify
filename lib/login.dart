@@ -31,9 +31,9 @@ class _LoginState extends State<Login> {
   void _checkUserLoggedIn() async {
     if (await userLoggedIn()) {
       if (mounted) {
-        Navigator.pushReplacement(
-          context,
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const Profil()),
+          (Route<dynamic> route) => false, // Remove all previous routes
         );
       }
     }
@@ -68,13 +68,8 @@ class _LoginState extends State<Login> {
       Fluttertoast.showToast(msg: "Utilisateur connecté avec succès");
 
       // rediriger vers la page home
-      // Navigator.pushReplacement(
-      //     context, MaterialPageRoute(builder: (context) => const Profil()));
-
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const Profil()),
-        (Route<dynamic> route) => false, // Remove all previous routes
-      );
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const Profil()));
 
       // Navigator.pop(context);
     } on DioException catch (e) {
@@ -82,13 +77,14 @@ class _LoginState extends State<Login> {
       if (e.response != null) {
         print(e.response?.data);
         print(e.response?.statusCode);
+        Fluttertoast.showToast(
+            msg: e.response?.data['message'] ?? "Une erreur est survenue");
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         print(e.requestOptions);
         print(e.message);
+        Fluttertoast.showToast(msg: "Erreur de connexion");
       }
-
-      Fluttertoast.showToast(msg: "Une erreur est survenue");
     } finally {
       setState(() {
         loading = false;
@@ -236,7 +232,7 @@ class _LoginState extends State<Login> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const Register()),
