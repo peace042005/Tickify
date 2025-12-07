@@ -39,3 +39,21 @@ L'application communique avec une API personnalisée pour les données d'événe
 
 - [Documentation de l'API](https://documenter.getpostman.com/view/41012504/2sAYX6qNVW)
 - [Code source de l'API](https://gitlab.com/leonel.tchassou/tickify-api)
+
+## Installation
+
+Assurez-vous que Flutter est installé sur votre système. Pour plus d'informations, consultez la [documentation officielle de Flutter](https://flutter.dev/docs/get-started/install).
+
+Clonez le dépôt et installez les dépendances :
+
+```bash
+git clone https://gitlab.com/leonel.tchassou/tickify
+cd tickify
+flutter pub get
+```
+
+Pour lancer l'application :
+
+```bash
+flutter run
+```
