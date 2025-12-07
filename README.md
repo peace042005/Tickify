@@ -1,23 +1,41 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+# Tickify
 
-- [groupe03_application](#groupe03_application)
-  - [Qu'est ce que c'est ?](#quest-ce-que-cest-)
+Une application Flutter pour acheter des billets d'événements en ligne. Il s'agit d'un projet scolaire qui simule les achats de billets sans gérer de vrais paiements.
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+![Accueil](art/first.png)
 
-# groupe03_application
+## Fonctionnalités
 
-Projet du groupe 03 - ENEAM - 2025
+- **Navigation d'événements** : Découvrez et explorez les événements disponibles
+- **Achat de billets** : Simulez l'achat de billets pour des événements
+- **Mes billets** : Affichez les billets achetés et vérifiez leur statut d'expiration
+- **Authentification** : Fonctionnalité de connexion et d'inscription
+- **Recherche** : Trouvez facilement des événements
+- **Thèmes** : Support du mode clair et sombre
 
-## Qu'est ce que c'est ?
+## Captures d'écran
 
-Cette application Flutter permet aux utilisateurs de réserver des tickets pour
-divers événements en toute simplicité. Grâce à une interface intuitive, ils
-peuvent parcourir les événements disponibles, sélectionner des places et
-effectuer leur réservation en quelques clics. L'application communique avec
-une API pour récupérer les informations des événements et
-gérer les réservations.
+### Authentification
+
+![Connexion](art/auth-login.png)
+![Inscription](art/auth-register.png)
+
+### Recherche
+
+![Recherche](art/search.png)
+
+### Mes billets
+
+![Mes billets](art/mes-tickets.png)
+
+### Paramètres
+
+![Paramètres Clair](art/settings-light.png)
+![Paramètres Sombre](art/settings-dark.png)
+
+## API
+
+L'application communique avec une API personnalisée pour les données d'événements et la gestion des billets.
 
 - [Documentation de l'API](https://documenter.getpostman.com/view/41012504/2sAYX6qNVW)
-- [Code source de l'API](https://gitlab.com/leonel.tchassou/groupe03-api)
+- [Code source de l'API](https://gitlab.com/leonel.tchassou/tickify-api)
