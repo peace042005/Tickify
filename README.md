@@ -2,7 +2,7 @@
 
 Une application Flutter pour acheter des billets d'événements en ligne. Il s'agit d'un projet scolaire qui simule les achats de billets sans gérer de vrais paiements.
 
-![Accueil](art/first.png)
+<img src="art/first.png" width="300" alt="Accueil">
 
 ## Fonctionnalités
 
@@ -17,21 +17,21 @@ Une application Flutter pour acheter des billets d'événements en ligne. Il s'a
 
 ### Authentification
 
-![Connexion](art/auth-login.png)
-![Inscription](art/auth-register.png)
+<img src="art/auth-login.png" width="300" alt="Connexion">
+<img src="art/auth-register.png" width="300" alt="Inscription">
 
 ### Recherche
 
-![Recherche](art/search.png)
+<img src="art/search.png" width="300" alt="Recherche">
 
 ### Mes billets
 
-![Mes billets](art/mes-tickets.png)
+<img src="art/mes-tickets.png" width="300" alt="Mes billets">
 
 ### Paramètres
 
-![Paramètres Clair](art/settings-light.png)
-![Paramètres Sombre](art/settings-dark.png)
+<img src="art/settings-light.png" width="300" alt="Paramètres Clair">
+<img src="art/settings-dark.png" width="300" alt="Paramètres Sombre">
 
 ## API
 
