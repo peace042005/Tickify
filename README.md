@@ -2,7 +2,7 @@
 
 Une application Flutter pour acheter des billets d'événements en ligne. Il s'agit d'un projet scolaire qui simule les achats de billets sans gérer de vrais paiements.
 
-<img src="art/first.png" width="300" alt="Accueil">
+<img src="art/first.png" width="250" alt="Accueil">
 
 ## Fonctionnalités
 
@@ -15,23 +15,31 @@ Une application Flutter pour acheter des billets d'événements en ligne. Il s'a
 
 ## Captures d'écran
 
-### Authentification
+<details>
+<summary>Authentification</summary>
 
-<img src="art/auth-login.png" width="300" alt="Connexion">
-<img src="art/auth-register.png" width="300" alt="Inscription">
+<img src="art/auth-login.png" width="250" alt="Connexion">
+<img src="art/auth-register.png" width="250" alt="Inscription">
+</details>
 
-### Recherche
+<details>
+<summary>Recherche</summary>
 
-<img src="art/search.png" width="300" alt="Recherche">
+<img src="art/search.png" width="250" alt="Recherche">
+</details>
 
-### Mes billets
+<details>
+<summary>Mes billets</summary>
 
-<img src="art/mes-tickets.png" width="300" alt="Mes billets">
+<img src="art/mes-tickets.png" width="250" alt="Mes billets">
+</details>
 
-### Paramètres
+<details>
+<summary>Paramètres</summary>
 
-<img src="art/settings-light.png" width="300" alt="Paramètres Clair">
-<img src="art/settings-dark.png" width="300" alt="Paramètres Sombre">
+<img src="art/settings-light.png" width="250" alt="Paramètres Clair">
+<img src="art/settings-dark.png" width="250" alt="Paramètres Sombre">
+</details>
 
 ## API
 
