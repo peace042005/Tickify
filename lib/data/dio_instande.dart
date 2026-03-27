@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 Dio configureDio() {
   final options = BaseOptions(
-    baseUrl: 'https://groupe03-api-2b03b8ee066a.herokuapp.com/api/v1/',
+    baseUrl: 'http://127.0.0.1:8000/api/v1/',
     connectTimeout: const Duration(seconds: 30),
     receiveTimeout: const Duration(seconds: 30),
     headers: {
